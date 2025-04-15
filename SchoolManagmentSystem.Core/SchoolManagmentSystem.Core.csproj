@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SchoolManagmentSystem.Data\SchoolManagmentSystem.Data.csproj" />
+    <ProjectReference Include="..\SchoolManagmentSystem.Infrastructure\SchoolManagmentSystem.Infrastructure.csproj" />
+    <ProjectReference Include="..\SchoolManagmentSystem.Service\SchoolManagmentSystem.Service.csproj" />
+  </ItemGroup>
+
+</Project>
