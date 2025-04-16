@@ -20,7 +20,7 @@ namespace SchoolManagmentSystem.API.Controllers
         public async Task<IActionResult> GetAllAsync()
         {
             var stds = await _mediator.Send(new GetStudentsListQuery());
-            if (stds == null || stds.Count == 0)
+            if (stds == null )
             {
                 return NotFound("No students found.");
             }
