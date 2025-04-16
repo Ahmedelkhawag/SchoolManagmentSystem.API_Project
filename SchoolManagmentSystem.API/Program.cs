@@ -1,4 +1,10 @@
 
+using Microsoft.EntityFrameworkCore;
+using SchoolManagmentSystem.Core.CoreDependacies;
+using SchoolManagmentSystem.Infrastructure.Data;
+using SchoolManagmentSystem.Infrastructure.Dependacies;
+using SchoolManagmentSystem.Service.Dependacies;
+
 namespace SchoolManagmentSystem.API
 {
     public class Program
@@ -8,8 +14,29 @@ namespace SchoolManagmentSystem.API
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            #region Controller Services
 
             builder.Services.AddControllers();
+
+            #endregion
+            #region DbContext Services
+
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
+
+            #endregion
+            #region InfraStructure Services
+
+            builder.Services.AddInfrastructureDependacies();
+
+            #endregion
+            #region Service Layer Services
+            builder.Services.AddServiceDependacies();
+            #endregion
+            #region Core Services
+            builder.Services.AddCoreDependacies();
+            #endregion
+
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
 
