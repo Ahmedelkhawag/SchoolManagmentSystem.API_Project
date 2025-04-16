@@ -1,5 +1,7 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
+using SchoolManagmentSystem.Core.Features.students.Queries.Results;
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
 using SchoolManagmentSystem.Service.Abstracts;
@@ -11,25 +13,29 @@ using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 {
-    public class GetAllStudentsListHandler:IRequestHandler<GetStudentsListQuery, List<Student>>
+    public class GetAllStudentsListHandler:IRequestHandler<GetStudentsListQuery, List<GetStudentListResponse>>
     {
         #region Fields
         private readonly IStudentService  _studentService;
+        private readonly IMapper _mapper;
 
         #endregion
 
         #region Ctors
-        public GetAllStudentsListHandler(IStudentService studentService)
+        public GetAllStudentsListHandler(IStudentService studentService , IMapper mapper)
         {
             _studentService = studentService;
+            _mapper = mapper;
         }
 
         #endregion
 
         #region Interface Implmentations
-        public async Task<List<Student>> Handle(GetStudentsListQuery request, CancellationToken cancellationToken)
+        public async Task<List<GetStudentListResponse>> Handle(GetStudentsListQuery request, CancellationToken cancellationToken)
         {
-            return await _studentService.GetAllStudentsAsync();
+            var studentlist =  await _studentService.GetAllStudentsAsync();
+            var mappedStudentList = _mapper.Map<List<GetStudentListResponse>>(studentlist);
+            return mappedStudentList;
         }
 
         #endregion
