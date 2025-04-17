@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
+using SchoolManagmentSystem.Data.AppMetaData;
 
 namespace SchoolManagmentSystem.API.Controllers
 {
-    [Route("api/[controller]")]
+   // [Route("api/[controller]")]
     [ApiController]
     public class StudentController : ControllerBase
     {
@@ -16,7 +17,7 @@ namespace SchoolManagmentSystem.API.Controllers
             _mediator = mediator;
         }
 
-        [HttpGet("students/all")]
+        [HttpGet(RouterParams.StudentRouting.list)]
         public async Task<IActionResult> GetAllAsync()
         {
             var stds = await _mediator.Send(new GetStudentsListQuery());
@@ -26,7 +27,7 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return Ok(stds);
         }
-        [HttpGet("student/{id:int}")]
+        [HttpGet(RouterParams.StudentRouting.GetById)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
             var std = await _mediator.Send(new GetStudentByIdQuery{ Id = id });
