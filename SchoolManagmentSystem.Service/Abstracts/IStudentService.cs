@@ -10,5 +10,6 @@ namespace SchoolManagmentSystem.Service.Abstracts
     public interface IStudentService
     {
         Task<List<Student>> GetAllStudentsAsync();
+        Task<Student> GetById(int Id);
     }
 }

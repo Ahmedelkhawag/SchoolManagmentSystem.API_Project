@@ -11,9 +11,9 @@ namespace SchoolManagmentSystem.Core.Bases
         public ResponseHandler()
         {
         }
-        public Response<T> Deleted<T>()
+        public GeneralResponse<T> Deleted<T>()
         {
-            return new Response<T>
+            return new GeneralResponse<T>
             {
                 statusCode = System.Net.HttpStatusCode.OK ,
                 Message = "Deleted Successfully",
@@ -22,9 +22,9 @@ namespace SchoolManagmentSystem.Core.Bases
             };
         }
 
-        public Response<T> Success<T>(T entity , object Meta = null)
+        public GeneralResponse<T> Success<T>(T entity , object Meta = null)
         { 
-         return new Response<T>
+         return new GeneralResponse<T>
          {
              statusCode = System.Net.HttpStatusCode.OK,
              Message = "Done Successfully",
@@ -34,18 +34,18 @@ namespace SchoolManagmentSystem.Core.Bases
          };
         }
 
-        public Response<T> Unauthorized<T>()
+        public GeneralResponse<T> Unauthorized<T>()
         {
-            return new Response<T>()
+            return new GeneralResponse<T>()
             {
                 statusCode = System.Net.HttpStatusCode.Unauthorized,
                 Succeeded = true,
                 Message = "UnAuthorized"
             };
         }
-        public Response<T> BadRequest<T>(string Message = null)
+        public GeneralResponse<T> BadRequest<T>(string Message = null)
         {
-            return new Response<T>()
+            return new GeneralResponse<T>()
             {
                 statusCode = System.Net.HttpStatusCode.BadRequest,
                 Succeeded = false,
@@ -53,9 +53,9 @@ namespace SchoolManagmentSystem.Core.Bases
             };
         }
 
-        public Response<T> NotFound<T>(string message = null)
+        public GeneralResponse<T> NotFound<T>(string message = null)
         {
-            return new Response<T>()
+            return new GeneralResponse<T>()
             {
                 statusCode = System.Net.HttpStatusCode.NotFound,
                 Succeeded = false,
@@ -63,9 +63,9 @@ namespace SchoolManagmentSystem.Core.Bases
             };
         }
 
-        public Response<T> Created<T>(T entity, object Meta = null)
+        public GeneralResponse<T> Created<T>(T entity, object Meta = null)
         {
-            return new Response<T>()
+            return new GeneralResponse<T>()
             {
                 Data = entity,
                 statusCode = System.Net.HttpStatusCode.Created,

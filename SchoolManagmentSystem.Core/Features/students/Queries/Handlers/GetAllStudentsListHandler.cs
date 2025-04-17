@@ -14,7 +14,9 @@ using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 {
-    public class GetAllStudentsListHandler:ResponseHandler , IRequestHandler<GetStudentsListQuery, Response<List<GetStudentListResponse>>>
+    public class GetAllStudentsListHandler:ResponseHandler ,
+        IRequestHandler<GetStudentsListQuery, GeneralResponse<List<GetStudentListResponse>>>,
+        IRequestHandler<GetStudentByIdQuery, GeneralResponse<GetSingleStudentResponse>>
     {
         #region Fields
         private readonly IStudentService  _studentService;
@@ -32,11 +34,24 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
         #endregion
 
         #region Interface Implmentations
-        public async Task<Response<List<GetStudentListResponse>>> Handle(GetStudentsListQuery request, CancellationToken cancellationToken)
+        public async Task<GeneralResponse<List<GetStudentListResponse>>> Handle(GetStudentsListQuery request, CancellationToken cancellationToken)
         {
             var studentlist =  await _studentService.GetAllStudentsAsync();
             var mappedStudentList = _mapper.Map<List<GetStudentListResponse>>(studentlist);
             return Success(mappedStudentList);
+        }
+
+        public async Task<GeneralResponse<GetSingleStudentResponse>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
+        {
+            var std = await _studentService.GetById(request.Id);
+
+            var mappedStudent = _mapper.Map<GetSingleStudentResponse>(std);
+            if (mappedStudent == null)
+            {
+                return NotFound<GetSingleStudentResponse>("Student not found");
+            }
+            return Success(mappedStudent);
+
         }
 
         #endregion

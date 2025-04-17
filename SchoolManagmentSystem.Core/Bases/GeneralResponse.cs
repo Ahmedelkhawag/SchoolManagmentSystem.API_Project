@@ -7,29 +7,29 @@ using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Bases
 {
-    public class Response<T>
+    public class GeneralResponse<T>
     {
 
-        public Response(string message, bool succeeded)
+        public GeneralResponse(string message, bool succeeded)
         {
             Succeeded = succeeded;
             Message = message;
         }
 
-        public Response(string message)
+        public GeneralResponse(string message)
         {
             Succeeded = false;
             Message = message;
         }
 
-        public Response(T data, string message = null)
+        public GeneralResponse(T data, string message = null)
         {
             Succeeded = true;
             Message = message;
             Data = data;
         }
 
-        public Response()
+        public GeneralResponse()
         {
         }
 

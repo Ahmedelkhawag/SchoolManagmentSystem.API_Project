@@ -16,6 +16,9 @@ namespace SchoolManagmentSystem.Core.Mapping.StudentsMapping
         {
             CreateMap<Student, GetStudentListResponse>()
                    .ForMember(dest => dest.DepartmentName, options => options.MapFrom(src => src.Department.DName));
+
+            //CreateMap<Student, GetSingleStudentResponse>()
+            //     .ForMember(dest => dest.DepartmentName, options => options.MapFrom(src => src.Department.DName));
         }
     }
 }

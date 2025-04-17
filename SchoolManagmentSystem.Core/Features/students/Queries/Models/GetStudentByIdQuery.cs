@@ -11,8 +11,8 @@ using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Features.students.Queries.Models
 {
-    public class GetStudentsListQuery : IRequest<GeneralResponse<List<GetStudentListResponse>>>
-    {  
+    public class GetStudentByIdQuery:IRequest<GeneralResponse<GetSingleStudentResponse>>
+    {
+        public int Id { get; set; }
     }
-   
 }

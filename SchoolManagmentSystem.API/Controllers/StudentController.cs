@@ -26,5 +26,15 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return Ok(stds);
         }
+        [HttpGet("student/{id:int}")]
+        public async Task<IActionResult> GetByIdAsync(int id)
+        {
+            var std = await _mediator.Send(new GetStudentByIdQuery{ Id = id });
+            if (std == null)
+            {
+                return NotFound("Student not found.");
+            }
+            return Ok(std);
+        }
     }
 }
