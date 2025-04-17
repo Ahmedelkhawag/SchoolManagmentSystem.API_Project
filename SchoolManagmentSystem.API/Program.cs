@@ -5,6 +5,7 @@ using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
 using SchoolManagmentSystem.Service.Dependacies;
 
+
 namespace SchoolManagmentSystem.API
 {
     public class Program
@@ -48,14 +49,14 @@ namespace SchoolManagmentSystem.API
                 app.MapOpenApi();
             }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+               app.UseAuthorization();
 
 
-            app.MapControllers();
+              app.MapControllers();
 
-            app.Run();
+              app.Run();
         }
     }
 }

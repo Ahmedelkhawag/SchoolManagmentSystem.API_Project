@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Infrastructure.Data;
+using SchoolManagmentSystem.Infrastructure.InfrastructureBases.Implmentation;
 using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Infrastructure.Repositories.Implementations
 {
-    public class StudentRepository : IStudentRepository
+    public class StudentRepository : GenericRepositoryAsync<Student> , IStudentRepository
     {
         #region Fields
 
@@ -19,7 +20,7 @@ namespace SchoolManagmentSystem.Infrastructure.Repositories.Implementations
         #endregion
 
         #region Constructors
-        public StudentRepository(ApplicationDbContext context)
+        public StudentRepository(ApplicationDbContext context):base(context)
         {
             _context = context;
         }
