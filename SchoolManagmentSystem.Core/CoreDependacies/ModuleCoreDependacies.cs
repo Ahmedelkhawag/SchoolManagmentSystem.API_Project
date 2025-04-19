@@ -1,12 +1,9 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using SchoolManagmentSystem.Core.Behaviors;
 using SchoolManagmentSystem.Core.Features.students.Queries.Handlers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.CoreDependacies
 {
@@ -17,6 +14,12 @@ namespace SchoolManagmentSystem.Core.CoreDependacies
 
             #region AutoAMpper Configuration
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+            #endregion
+
+            #region Validator Config
+            services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             #endregion
 
             #region Mediator Configuration 

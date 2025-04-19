@@ -1,10 +1,12 @@
 
 using Microsoft.EntityFrameworkCore;
+using Scalar.AspNetCore;
 using SchoolManagmentSystem.Core.CoreDependacies;
+using SchoolManagmentSystem.Core.Middlewares;
 using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
 using SchoolManagmentSystem.Service.Dependacies;
-using Scalar.AspNetCore;
+
 
 
 namespace SchoolManagmentSystem.API
@@ -51,6 +53,8 @@ namespace SchoolManagmentSystem.API
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
+            #region HTTP request pipeline
+
             if (app.Environment.IsDevelopment())
             {
                 app.MapOpenApi();
@@ -59,14 +63,14 @@ namespace SchoolManagmentSystem.API
                 {
                     options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                     options.RoutePrefix = string.Empty; // ?? ???? ????? Swagger ??? ?????? ????????
-                    
+
                 });
 
                 app.MapScalarApiReference();
-                
+
 
             }
-
+            app.UseMiddleware<ErrorHandlerMiddleware>();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
@@ -75,6 +79,8 @@ namespace SchoolManagmentSystem.API
             app.MapControllers();
 
             app.Run();
+            #endregion
+
         }
     }
 }

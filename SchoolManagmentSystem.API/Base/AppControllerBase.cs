@@ -15,7 +15,7 @@ namespace SchoolManagmentSystem.API.Base
         protected IMediator Mediator => _mediatorInstance ??= HttpContext.RequestServices.GetService<IMediator>();
 
         #region Actions
-        public ObjectResult NewResult<T>(GeneralResponse<T> response)
+        public ObjectResult CustomResult<T>(GeneralResponse<T> response)
         {
             switch (response.statusCode)
             { 

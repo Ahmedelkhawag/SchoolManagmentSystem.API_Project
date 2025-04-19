@@ -2,11 +2,6 @@
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
 using SchoolManagmentSystem.Service.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Service.Implmentations
 {
@@ -25,14 +20,14 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<string> AddStudentAsync(Student student)
         {
-            var std =await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(student.Name)).FirstOrDefaultAsync();
-            if ( std is not null)
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(student.Name)).FirstOrDefaultAsync();
+            if (std is not null)
             {
                 return ("Student already exists");
             }
             else
             {
-               await _studentRepository.AddAsync(student);
+                await _studentRepository.AddAsync(student);
                 return ("Student added successfully");
             }
         }
@@ -47,9 +42,22 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<Student> GetById(int Id)
         {
-            var query =  _studentRepository.GetTableNoTracking();
-            var student  =await query.Include(s=>s.Department).FirstOrDefaultAsync(s => s.StudID == Id);
+            var query = _studentRepository.GetTableNoTracking();
+            var student = await query.Include(s => s.Department).FirstOrDefaultAsync(s => s.StudID == Id);
             return student;
+        }
+
+        public async Task<bool> IsNameExist(string name)
+        {
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(name)).FirstOrDefaultAsync();
+            if (std is not null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         #endregion

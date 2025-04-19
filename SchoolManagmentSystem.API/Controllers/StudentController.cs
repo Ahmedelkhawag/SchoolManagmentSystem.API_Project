@@ -34,7 +34,7 @@ namespace SchoolManagmentSystem.API.Controllers
             {
                 return NotFound("Student not found.");
             }
-            return NewResult(std);
+            return CustomResult(std);
         }
 
         [HttpPost(RouterParams.StudentRouting.Create)]
@@ -48,7 +48,7 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             else
             {
-                return NewResult(response);
+                return CustomResult(response);
             }
         }
     }
