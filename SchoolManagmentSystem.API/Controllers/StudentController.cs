@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
 using SchoolManagmentSystem.Data.AppMetaData;
@@ -9,19 +10,16 @@ namespace SchoolManagmentSystem.API.Controllers
 {
    // [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentController : AppControllerBase
     {
-        private readonly IMediator _mediator;
+        
 
-        public StudentController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        
 
         [HttpGet(RouterParams.StudentRouting.list)]
         public async Task<IActionResult> GetAllAsync()
         {
-            var stds = await _mediator.Send(new GetStudentsListQuery());
+            var stds = await Mediator.Send(new GetStudentsListQuery());
             if (stds == null )
             {
                 return NotFound("No students found.");
@@ -31,18 +29,18 @@ namespace SchoolManagmentSystem.API.Controllers
         [HttpGet(RouterParams.StudentRouting.GetById)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
-            var std = await _mediator.Send(new GetStudentByIdQuery{ Id = id });
+            var std = await Mediator.Send(new GetStudentByIdQuery{ Id = id });
             if (std == null)
             {
                 return NotFound("Student not found.");
             }
-            return Ok(std);
+            return NewResult(std);
         }
 
         [HttpPost(RouterParams.StudentRouting.Create)]
         public async Task<IActionResult> CreateStudent([FromBody] AddStudentCommand studentCommand)
         {
-            var response = await _mediator.Send(studentCommand);
+            var response = await Mediator.Send(studentCommand);
            
             if (response.Succeeded)
             {
@@ -50,7 +48,7 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             else
             {
-                return BadRequest(response);
+                return NewResult(response);
             }
         }
     }
