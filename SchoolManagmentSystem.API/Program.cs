@@ -4,6 +4,7 @@ using SchoolManagmentSystem.Core.CoreDependacies;
 using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
 using SchoolManagmentSystem.Service.Dependacies;
+using Scalar.AspNetCore;
 
 
 namespace SchoolManagmentSystem.API
@@ -60,16 +61,19 @@ namespace SchoolManagmentSystem.API
                     options.RoutePrefix = string.Empty; // ?? ???? ????? Swagger ??? ?????? ????????
                 });
 
+                app.MapScalarApiReference();
+                
+
             }
 
             app.UseHttpsRedirection();
 
-               app.UseAuthorization();
+            app.UseAuthorization();
 
 
-              app.MapControllers();
+            app.MapControllers();
 
-              app.Run();
+            app.Run();
         }
     }
 }

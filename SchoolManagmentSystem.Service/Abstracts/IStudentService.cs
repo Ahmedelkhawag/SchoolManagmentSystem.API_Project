@@ -11,5 +11,6 @@ namespace SchoolManagmentSystem.Service.Abstracts
     {
         Task<List<Student>> GetAllStudentsAsync();
         Task<Student> GetById(int Id);
+        Task<string> AddStudentAsync(Student student);
     }
 }

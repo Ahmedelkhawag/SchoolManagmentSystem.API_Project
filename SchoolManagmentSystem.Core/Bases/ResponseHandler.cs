@@ -53,6 +53,16 @@ namespace SchoolManagmentSystem.Core.Bases
             };
         }
 
+        public GeneralResponse<T> UnprocessableEntity<T>(string Message = null)
+        {
+            return new GeneralResponse<T>()
+            {
+                statusCode = System.Net.HttpStatusCode.UnprocessableEntity,
+                Succeeded = false,
+                Message = Message == null ? "Unprocessable Entity" : Message
+            };
+        }
+
         public GeneralResponse<T> NotFound<T>(string message = null)
         {
             return new GeneralResponse<T>()

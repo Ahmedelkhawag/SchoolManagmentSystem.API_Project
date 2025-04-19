@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagmentSystem.Core.Features.students.Commads.Models;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
 using SchoolManagmentSystem.Data.AppMetaData;
 
@@ -36,6 +37,21 @@ namespace SchoolManagmentSystem.API.Controllers
                 return NotFound("Student not found.");
             }
             return Ok(std);
+        }
+
+        [HttpPost(RouterParams.StudentRouting.Create)]
+        public async Task<IActionResult> CreateStudent([FromBody] AddStudentCommand studentCommand)
+        {
+            var response = await _mediator.Send(studentCommand);
+           
+            if (response.Succeeded)
+            {
+                return Ok(new {statuscode = response.statusCode , message = response.Message , Errors = response.Errors , Data = studentCommand });
+            }
+            else
+            {
+                return BadRequest(response);
+            }
         }
     }
 }

@@ -23,6 +23,20 @@ namespace SchoolManagmentSystem.Service.Implmentations
             _studentRepository = studentRepository;
         }
 
+        public async Task<string> AddStudentAsync(Student student)
+        {
+            var std =await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(student.Name)).FirstOrDefaultAsync();
+            if ( std is not null)
+            {
+                return ("Student already exists");
+            }
+            else
+            {
+               await _studentRepository.AddAsync(student);
+                return ("Student added successfully");
+            }
+        }
+
         #endregion
 
         #region Interface Implmentations
