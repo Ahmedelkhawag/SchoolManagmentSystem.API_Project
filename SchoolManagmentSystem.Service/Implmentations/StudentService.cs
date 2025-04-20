@@ -32,6 +32,21 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
         }
 
+        public async Task<string> DeleteStudentAsync(int Id)
+        {
+            var std = await _studentRepository.GetByIdAsync(Id);
+            if (std is null)
+            {
+                return ("Student not found");
+            }
+            else
+            {
+                await _studentRepository.DeleteAsync(std);
+                return ("Student deleted successfully");
+            }
+
+        }
+
         #endregion
 
         #region Interface Implmentations

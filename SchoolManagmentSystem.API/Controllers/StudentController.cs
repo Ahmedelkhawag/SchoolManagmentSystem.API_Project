@@ -64,5 +64,20 @@ namespace SchoolManagmentSystem.API.Controllers
                 return CustomResult(response);
             }
         }
+        [HttpDelete(RouterParams.StudentRouting.Delete)]
+        public async Task<IActionResult> DeleteStudent(int id)
+        {
+
+            var student = new DeleteStudentCommand { Id = id };
+            var response = await Mediator.Send(student);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
     }
 }

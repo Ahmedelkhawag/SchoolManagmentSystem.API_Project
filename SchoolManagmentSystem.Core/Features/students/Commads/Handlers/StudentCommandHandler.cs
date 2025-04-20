@@ -9,7 +9,8 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
 {
     public class StudentCommandHandler : ResponseHandler,
         IRequestHandler<AddStudentCommand, GeneralResponse<string>>,
-        IRequestHandler<EditStudentCommand, GeneralResponse<string>>
+        IRequestHandler<EditStudentCommand, GeneralResponse<string>>,
+        IRequestHandler<DeleteStudentCommand, GeneralResponse<string>>
     {
         #region props
         private readonly IStudentService _studentService;
@@ -57,6 +58,17 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
                 }
 
             }
+        }
+
+        public async Task<GeneralResponse<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _studentService.DeleteStudentAsync(request.Id);
+            if (result.Contains("successfully")) return NoContent<string>(result);
+            else
+            {
+                return NotFound<string>();
+            }
+
         }
         #endregion
     }
