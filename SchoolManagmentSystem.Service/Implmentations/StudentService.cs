@@ -63,8 +63,20 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public IQueryable<Student> FilterStudentWithpaginatedQueryable(string Search)
         {
-            var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).Where(s => s.Name.Contains(Search) || s.Address.Contains(Search)).AsQueryable();
-            return query;
+
+            if (!string.IsNullOrEmpty(Search))
+            {
+                var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).Where(s => s.Name.Contains(Search) || s.Address.Contains(Search)).AsQueryable();
+                return query;
+            }
+            else
+            {
+                var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
+                return query;
+            }
+
+
+
         }
         #endregion
 
