@@ -63,7 +63,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
         public async Task<GeneralResponse<string>> Handle(DeleteStudentCommand request, CancellationToken cancellationToken)
         {
             var result = await _studentService.DeleteStudentAsync(request.Id);
-            if (result.Contains("successfully")) return NoContent<string>(result);
+            if (result.Contains("successfully")) return Deleted<string>(result);
             else
             {
                 return NotFound<string>();

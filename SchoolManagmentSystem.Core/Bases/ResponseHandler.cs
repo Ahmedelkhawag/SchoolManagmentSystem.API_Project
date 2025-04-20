@@ -90,6 +90,18 @@
                 Meta = Meta
             };
         }
+
+        public GeneralResponse<T> Deleted<T>(T entity, string Message = null)
+        {
+            return new GeneralResponse<T>()
+            {
+                Data = entity,
+                statusCode = System.Net.HttpStatusCode.NoContent,
+                Succeeded = true,
+                Message = Message == null ? "Deleted Successfully.." : Message
+
+            };
+        }
     }
 
 }

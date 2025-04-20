@@ -34,17 +34,31 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<string> DeleteStudentAsync(int Id)
         {
-            var std = await _studentRepository.GetByIdAsync(Id);
-            if (std is null)
+            var transaction = _studentRepository.BeginTransaction();
+            try
             {
-                return ("Student not found");
+                var std = await GetByIdAsyncWithoutInclude(Id);
+                if (std is null)
+                {
+                    return ("Student not found");
+                }
+                else
+                {
+                    await _studentRepository.DeleteAsync(std);
+                    await transaction.CommitAsync();
+                    return ("Student deleted successfully");
+                }
             }
-            else
+            catch (Exception)
             {
-                await _studentRepository.DeleteAsync(std);
-                return ("Student deleted successfully");
+                await transaction.RollbackAsync();
+                return ("An error occurred while deleting the student");
             }
+            finally
+            {
+                await transaction.DisposeAsync();
 
+            }
         }
 
         #endregion
@@ -59,6 +73,13 @@ namespace SchoolManagmentSystem.Service.Implmentations
         {
             var query = _studentRepository.GetTableNoTracking();
             var student = await query.Include(s => s.Department).FirstOrDefaultAsync(s => s.StudID == Id);
+            return student;
+        }
+
+        public async Task<Student> GetByIdAsyncWithoutInclude(int Id)
+        {
+            var query = _studentRepository.GetTableNoTracking();
+            var student = await query.FirstOrDefaultAsync(s => s.StudID == Id);
             return student;
         }
 
