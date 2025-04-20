@@ -3,29 +3,26 @@ using MediatR;
 using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
 using SchoolManagmentSystem.Core.Features.students.Queries.Results;
+using SchoolManagmentSystem.Core.Wrappers;
 using SchoolManagmentSystem.Data.Entities;
-using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
 using SchoolManagmentSystem.Service.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 {
-    public class GetAllStudentsListHandler:ResponseHandler ,
+    public class GetAllStudentsListHandler : ResponseHandler,
         IRequestHandler<GetStudentsListQuery, GeneralResponse<List<GetStudentListResponse>>>,
-        IRequestHandler<GetStudentByIdQuery, GeneralResponse<GetSingleStudentResponse>>
+        IRequestHandler<GetStudentByIdQuery, GeneralResponse<GetSingleStudentResponse>>,
+       IRequestHandler<GetStudentListQueryPaginated, PaginatedResult<GetStudentPaginatedListResponse>>
     {
         #region Fields
-        private readonly IStudentService  _studentService;
+        private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Ctors
-        public GetAllStudentsListHandler(IStudentService studentService , IMapper mapper)
+        public GetAllStudentsListHandler(IStudentService studentService, IMapper mapper)
         {
             _studentService = studentService;
             _mapper = mapper;
@@ -36,7 +33,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
         #region Interface Implmentations
         public async Task<GeneralResponse<List<GetStudentListResponse>>> Handle(GetStudentsListQuery request, CancellationToken cancellationToken)
         {
-            var studentlist =  await _studentService.GetAllStudentsAsync();
+            var studentlist = await _studentService.GetAllStudentsAsync();
             var mappedStudentList = _mapper.Map<List<GetStudentListResponse>>(studentlist);
             return Success(mappedStudentList);
         }
@@ -54,7 +51,18 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 
         }
 
+        public async Task<PaginatedResult<GetStudentPaginatedListResponse>> Handle(GetStudentListQueryPaginated request, CancellationToken cancellationToken)
+        {
+            Expression<Func<Student, GetStudentPaginatedListResponse>> expression = e => new GetStudentPaginatedListResponse(e.StudID, e.Name, e.Address, e.Department.DName);
+            var query = _studentService.FilterStudentWithpaginatedQueryable(request.Search);
+            var Filteredquery = await query.Select(expression).ToPaginatedListAsynd(request.PageNumber, request.PageSize);
+            return Filteredquery;
+        }
+
+
+
+
         #endregion
     }
-    
+
 }

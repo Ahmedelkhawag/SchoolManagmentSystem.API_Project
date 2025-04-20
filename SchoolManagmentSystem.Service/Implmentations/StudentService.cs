@@ -61,12 +61,22 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
         }
 
+        public IQueryable<Student> FilterStudentWithpaginatedQueryable(string Search)
+        {
+            var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).Where(s => s.Name.Contains(Search) || s.Address.Contains(Search)).AsQueryable();
+            return query;
+        }
         #endregion
 
         #region Interface Implmentations
         public async Task<List<Student>> GetAllStudentsAsync()
         {
             return await _studentRepository.GetAllStudentsAsync();
+        }
+
+        public IQueryable<Student> GetAllStudentsQueryable()
+        {
+            return _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
         }
 
         public async Task<Student> GetById(int Id)

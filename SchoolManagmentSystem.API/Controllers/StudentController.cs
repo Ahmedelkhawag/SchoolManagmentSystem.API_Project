@@ -21,6 +21,19 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return Ok(stds);
         }
+
+        [HttpGet(RouterParams.StudentRouting.paginatedList)]
+        public async Task<IActionResult> GetAllStudentWithPaginatedAsync([FromQuery] GetStudentListQueryPaginated query)
+        {
+            var stds = await Mediator.Send(query);
+
+            if (stds == null)
+            {
+                return NotFound("No students found.");
+            }
+            return Ok(stds);
+        }
+
         [HttpGet(RouterParams.StudentRouting.GetById)]
         public async Task<IActionResult> GetByIdAsync(int id)
         {
