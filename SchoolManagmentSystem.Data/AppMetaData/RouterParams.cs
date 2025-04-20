@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SchoolManagmentSystem.Data.AppMetaData
+﻿namespace SchoolManagmentSystem.Data.AppMetaData
 {
     public static class RouterParams
     {
@@ -14,10 +8,11 @@ namespace SchoolManagmentSystem.Data.AppMetaData
         public const string Rule = $"{Root}/{Version}";
         public static class StudentRouting
         {
-          public const string Prefix = $"{Rule}/Student";
+            public const string Prefix = $"{Rule}/Student";
             public const string list = $"{Prefix}/list";
-            public const string GetById = Prefix+SingleIdRoute;
-            public const string Create = Prefix+"Create";
+            public const string GetById = Prefix + SingleIdRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + SingleIdRoute;
 
         }
     }

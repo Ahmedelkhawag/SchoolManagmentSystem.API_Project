@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SchoolManagmentSystem.Core.Bases
+﻿namespace SchoolManagmentSystem.Core.Bases
 {
     public class ResponseHandler
     {
@@ -15,23 +9,23 @@ namespace SchoolManagmentSystem.Core.Bases
         {
             return new GeneralResponse<T>
             {
-                statusCode = System.Net.HttpStatusCode.OK ,
+                statusCode = System.Net.HttpStatusCode.OK,
                 Message = "Deleted Successfully",
                 Succeeded = true,
-                
+
             };
         }
 
-        public GeneralResponse<T> Success<T>(T entity , object Meta = null)
-        { 
-         return new GeneralResponse<T>
-         {
-             statusCode = System.Net.HttpStatusCode.OK,
-             Message = "Done Successfully",
-             Succeeded = true,
-             Data = entity,
-             Meta = Meta
-         };
+        public GeneralResponse<T> Success<T>(T entity, object Meta = null)
+        {
+            return new GeneralResponse<T>
+            {
+                statusCode = System.Net.HttpStatusCode.OK,
+                Message = "Done Successfully",
+                Succeeded = true,
+                Data = entity,
+                Meta = Meta
+            };
         }
 
         public GeneralResponse<T> Unauthorized<T>()
@@ -81,6 +75,18 @@ namespace SchoolManagmentSystem.Core.Bases
                 statusCode = System.Net.HttpStatusCode.Created,
                 Succeeded = true,
                 Message = "Created",
+                Meta = Meta
+            };
+        }
+
+        public GeneralResponse<T> NoContent<T>(T entity, object Meta = null)
+        {
+            return new GeneralResponse<T>()
+            {
+                Data = entity,
+                statusCode = System.Net.HttpStatusCode.NoContent,
+                Succeeded = true,
+                Message = "Done..",
                 Meta = Meta
             };
         }

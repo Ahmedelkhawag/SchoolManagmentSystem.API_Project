@@ -60,6 +60,27 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
         }
 
+        public async Task<bool> IsNameExistWithDidderentId(string name, int Id)
+        {
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(name) && s.StudID != Id).FirstOrDefaultAsync();
+            if (std is not null)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public async Task<string> UpdateStudentAsync(Student student)
+        {
+
+            await _studentRepository.UpdateAsync(student);
+            return ("Student updated successfully");
+
+        }
+
         #endregion
     }
 }

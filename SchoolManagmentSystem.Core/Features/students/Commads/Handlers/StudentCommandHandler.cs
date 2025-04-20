@@ -1,19 +1,15 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Service.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
 {
-    public class StudentCommandHandler : ResponseHandler, IRequestHandler<AddStudentCommand, GeneralResponse<string>>
+    public class StudentCommandHandler : ResponseHandler,
+        IRequestHandler<AddStudentCommand, GeneralResponse<string>>,
+        IRequestHandler<EditStudentCommand, GeneralResponse<string>>
     {
         #region props
         private readonly IStudentService _studentService;
@@ -36,16 +32,30 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
         {
             var mappedStudent = _mapper.Map<Student>(request);
             var result = await _studentService.AddStudentAsync(mappedStudent);
-            if (result.Contains("exist"))
-            {
-                return UnprocessableEntity<string>("Student Not Added");
-            }
 
-            else if (result.Contains("successfully")) return Created<string>(result);
+
+            if (result.Contains("successfully")) return Created<string>(result);
 
             else
             {
                 return BadRequest<string>();
+            }
+        }
+
+        public async Task<GeneralResponse<string>> Handle(EditStudentCommand request, CancellationToken cancellationToken)
+        {
+            var ExistingStudent = await _studentService.GetById(request.Id);
+            if (ExistingStudent == null) return NotFound<string>("Student is not found");
+            else
+            {
+                var mappedStudent = _mapper.Map<EditStudentCommand, Student>(request, ExistingStudent);
+                var result = await _studentService.UpdateStudentAsync(mappedStudent);
+                if (result.Contains("successfully")) return NoContent<string>(result);
+                else
+                {
+                    return BadRequest<string>();
+                }
+
             }
         }
         #endregion

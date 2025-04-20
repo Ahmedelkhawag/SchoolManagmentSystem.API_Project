@@ -1,6 +1,4 @@
-﻿using Azure;
-using MediatR;
-using Microsoft.AspNetCore.Http;
+﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.Core.Bases;
 using System.Net;
@@ -18,8 +16,8 @@ namespace SchoolManagmentSystem.API.Base
         public ObjectResult CustomResult<T>(GeneralResponse<T> response)
         {
             switch (response.statusCode)
-            { 
-            case HttpStatusCode.OK:
+            {
+                case HttpStatusCode.OK:
                     return new OkObjectResult(response);
                 case HttpStatusCode.Created:
                     return new CreatedResult(string.Empty, response);
@@ -38,7 +36,7 @@ namespace SchoolManagmentSystem.API.Base
             }
         }
 
-     
+
         #endregion
     }
 }
