@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolManagmentSystem.Data.Entities;
+using SchoolManagmentSystem.Data.Helpers;
 using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
 using SchoolManagmentSystem.Service.Abstracts;
 
@@ -61,22 +62,32 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
         }
 
-        public IQueryable<Student> FilterStudentWithpaginatedQueryable(string Search)
+        public IQueryable<Student> FilterStudentWithpaginatedQueryable(StudentOrderingEnum OrderBy, string Search)
         {
 
+            var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
             if (!string.IsNullOrEmpty(Search))
             {
-                var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).Where(s => s.Name.Contains(Search) || s.Address.Contains(Search)).AsQueryable();
-                return query;
+                query = query.Where(s => s.Name.Contains(Search) || s.Address.Contains(Search));
+
+
             }
-            else
+            switch (OrderBy)
             {
-                var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
-                return query;
+                case StudentOrderingEnum.StudID:
+                    query = query.OrderBy(s => s.StudID);
+                    break;
+                case StudentOrderingEnum.Name:
+                    query = query.OrderBy(s => s.Name);
+                    break;
+                case StudentOrderingEnum.Address:
+                    query = query.OrderBy(s => s.Address);
+                    break;
+                case StudentOrderingEnum.DepartmentName:
+                    query = query.OrderBy(s => s.Department.DName);
+                    break;
             }
-
-
-
+            return query;
         }
         #endregion
 

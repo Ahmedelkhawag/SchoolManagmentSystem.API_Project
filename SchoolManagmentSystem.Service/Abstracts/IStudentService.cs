@@ -1,4 +1,5 @@
 ﻿using SchoolManagmentSystem.Data.Entities;
+using SchoolManagmentSystem.Data.Helpers;
 
 namespace SchoolManagmentSystem.Service.Abstracts
 {
@@ -14,7 +15,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
 
         Task<bool> IsNameExistWithDidderentId(string name, int Id);
         IQueryable<Student> GetAllStudentsQueryable();
-        IQueryable<Student> FilterStudentWithpaginatedQueryable(string Search);
+        IQueryable<Student> FilterStudentWithpaginatedQueryable(StudentOrderingEnum OrderBy, string Search);
 
 
     }
