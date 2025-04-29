@@ -21,7 +21,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<string> AddStudentAsync(Student student)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(student.Name)).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(student.NameAr)).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return ("Student already exists");
@@ -68,7 +68,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
             var query = _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
             if (!string.IsNullOrEmpty(Search))
             {
-                query = query.Where(s => s.Name.Contains(Search) || s.Address.Contains(Search));
+                query = query.Where(s => s.NameAr.Contains(Search) || s.Address.Contains(Search));
 
 
             }
@@ -78,13 +78,13 @@ namespace SchoolManagmentSystem.Service.Implmentations
                     query = query.OrderBy(s => s.StudID);
                     break;
                 case StudentOrderingEnum.Name:
-                    query = query.OrderBy(s => s.Name);
+                    query = query.OrderBy(s => s.NameAr);
                     break;
                 case StudentOrderingEnum.Address:
                     query = query.OrderBy(s => s.Address);
                     break;
                 case StudentOrderingEnum.DepartmentName:
-                    query = query.OrderBy(s => s.Department.DName);
+                    query = query.OrderBy(s => s.Department.DNameAr);
                     break;
             }
             return query;
@@ -118,7 +118,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<bool> IsNameExist(string name)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(name)).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(name)).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return true;
@@ -131,7 +131,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<bool> IsNameExistWithDidderentId(string name, int Id)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.Name.Equals(name) && s.StudID != Id).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(name) && s.StudID != Id).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return true;

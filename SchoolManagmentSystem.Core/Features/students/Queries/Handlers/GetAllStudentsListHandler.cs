@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
 using SchoolManagmentSystem.Core.Features.students.Queries.Results;
+using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Core.Wrappers;
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Service.Abstracts;
@@ -18,14 +20,16 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
         #region Fields
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResourse> _Localizer;
 
         #endregion
 
         #region Ctors
-        public GetAllStudentsListHandler(IStudentService studentService, IMapper mapper)
+        public GetAllStudentsListHandler(IStudentService studentService, IMapper mapper, IStringLocalizer<SharedResourse> Localizer) : base(Localizer)
         {
             _studentService = studentService;
             _mapper = mapper;
+            _Localizer = Localizer;
         }
 
         #endregion
@@ -45,7 +49,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
             var mappedStudent = _mapper.Map<GetSingleStudentResponse>(std);
             if (mappedStudent == null)
             {
-                return NotFound<GetSingleStudentResponse>("Student not found");
+                return NotFound<GetSingleStudentResponse>(_Localizer[SharedResourseKeys.NotFound]);
             }
             return Success(mappedStudent);
 
@@ -53,7 +57,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 
         public async Task<PaginatedResult<GetStudentPaginatedListResponse>> Handle(GetStudentListQueryPaginated request, CancellationToken cancellationToken)
         {
-            Expression<Func<Student, GetStudentPaginatedListResponse>> expression = e => new GetStudentPaginatedListResponse(e.StudID, e.Name, e.Address, e.Department.DName);
+            Expression<Func<Student, GetStudentPaginatedListResponse>> expression = e => new GetStudentPaginatedListResponse(e.StudID, e.NameAr, e.Address, e.Department.DNameEn);
             var query = _studentService.FilterStudentWithpaginatedQueryable(request.OrderBy, request.Search);
             var Filteredquery = await query.Select(expression).ToPaginatedListAsynd(request.PageNumber, request.PageSize);
             return Filteredquery;

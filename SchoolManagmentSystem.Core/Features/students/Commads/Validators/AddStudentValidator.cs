@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
+using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
@@ -8,13 +10,15 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
     {
         #region Fields
         private readonly IStudentService _studentService;
+        private readonly IStringLocalizer<SharedResourse> _localizer;
 
         #endregion
 
         #region Ctors
-        public AddStudentValidator(IStudentService studentService)
+        public AddStudentValidator(IStudentService studentService, IStringLocalizer<SharedResourse> localizer)
         {
             _studentService = studentService;
+            _localizer = localizer;
             ApplyValidationRules();
             ApplyCustomValidationRules();
         }
@@ -23,22 +27,22 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
         #region Actions
         public void ApplyValidationRules()
         {
-            RuleFor(s => s.Name).NotEmpty().WithMessage("Name is Required..")
-                  .NotNull().WithMessage("Name is Required And can't be null ..")
-                  .MaximumLength(50).WithMessage("Name must be less than 50 characters")
-                  .MinimumLength(2).WithMessage("Name must be more than 2 characters");
+            RuleFor(s => s.Name).NotEmpty().WithMessage(_localizer[SharedResourseKeys.NotEmpty])
+                  .NotNull().WithMessage(_localizer[SharedResourseKeys.NotNull])
+                  .MaximumLength(50).WithMessage(_localizer[SharedResourseKeys.MaximumLength])
+                  .MinimumLength(2).WithMessage(_localizer[SharedResourseKeys.MinimumLength]);
 
-            RuleFor(s => s.Address).NotEmpty().WithMessage("Address is Required..")
-             .NotNull().WithMessage("Address is Required..")
-             .MaximumLength(250).WithMessage("Address must be less than 250 characters")
-             .MinimumLength(3).WithMessage("Address must be more than 2 characters");
+            RuleFor(s => s.Address).NotEmpty().WithMessage(_localizer[SharedResourseKeys.NotEmpty])
+             .NotNull().WithMessage(_localizer[SharedResourseKeys.NotNull])
+             .MaximumLength(250).WithMessage(_localizer[SharedResourseKeys.MaximumLength])
+             .MinimumLength(3).WithMessage(_localizer[SharedResourseKeys.MinimumLength]);
         }
 
         public void ApplyCustomValidationRules()
         {
             RuleFor(s => s.Name)
                 .MustAsync(async (key, CancellationToken) => !await _studentService.IsNameExist(key))
-                .WithMessage("Student with this name already exists");
+                .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
 
 
         }

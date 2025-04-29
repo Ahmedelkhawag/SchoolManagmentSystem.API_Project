@@ -1,0 +1,20 @@
+﻿namespace SchoolManagmentSystem.Core.SharedResourses
+{
+    public static class SharedResourseKeys
+    {
+        public const string Required = "Required";
+        public const string NotFound = "NotFound";
+        public const string Deleted = "Deleted";
+        public const string Created = "Created";
+        public const string Updated = "Updated";
+        public const string Unprocessable = "Unprocessable";
+        public const string Unauthorized = "Unauthorized";
+        public const string Succeeded = "Succeeded";
+        public const string BadRequest = "BadRequest";
+        public const string NotEmpty = "NotEmpty";
+        public const string NotNull = "NotNull";
+        public const string MaximumLength = "MaximumLength";
+        public const string MinimumLength = "MinimumLength";
+        public const string AlreadyExists = "AlreadyExists";
+    }
+}

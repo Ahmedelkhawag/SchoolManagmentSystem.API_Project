@@ -1,11 +1,14 @@
 
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using SchoolManagmentSystem.Core.CoreDependacies;
 using SchoolManagmentSystem.Core.Middlewares;
 using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
 using SchoolManagmentSystem.Service.Dependacies;
+using System.Globalization;
 
 
 
@@ -46,6 +49,26 @@ namespace SchoolManagmentSystem.API
             builder.Services.AddSwaggerGen();
 
             #endregion
+            #region Localization 
+            builder.Services.AddLocalization(options =>
+            {
+                options.ResourcesPath = "";
+            }
+            );
+
+            builder.Services.Configure<RequestLocalizationOptions>(options =>
+            {
+                List<CultureInfo> supportedCultures = new List<CultureInfo>
+            {
+                new CultureInfo("en-US"),
+                new CultureInfo("ar-EG")
+            };
+                options.DefaultRequestCulture = new RequestCulture("en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+                options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
+            });
+            #endregion
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             builder.Services.AddOpenApi();
@@ -71,6 +94,8 @@ namespace SchoolManagmentSystem.API
 
             }
             app.UseMiddleware<ErrorHandlerMiddleware>();
+            var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
+            app.UseRequestLocalization(options.Value);
             app.UseHttpsRedirection();
 
             app.UseAuthorization();

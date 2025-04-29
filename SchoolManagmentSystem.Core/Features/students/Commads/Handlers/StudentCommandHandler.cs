@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
+using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities;
 using SchoolManagmentSystem.Service.Abstracts;
 
@@ -15,12 +17,13 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Handlers
         #region props
         private readonly IStudentService _studentService;
         private readonly IMapper _mapper;
+        private readonly IStringLocalizer<SharedResourse> _localizer;
 
 
         #endregion
 
         #region Ctors
-        public StudentCommandHandler(IStudentService studentService, IMapper mapper)
+        public StudentCommandHandler(IStudentService studentService, IMapper mapper, IStringLocalizer<SharedResourse> localizer) : base(localizer)
         {
             _studentService = studentService;
             _mapper = mapper;
