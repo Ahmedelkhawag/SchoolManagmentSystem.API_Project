@@ -39,7 +39,13 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
         {
             var studentlist = await _studentService.GetAllStudentsAsync();
             var mappedStudentList = _mapper.Map<List<GetStudentListResponse>>(studentlist);
-            return Success(mappedStudentList);
+            var result = Success(mappedStudentList);
+            result.Meta = new
+            {
+                TotalCount = mappedStudentList.Count,
+
+            };
+            return result;
         }
 
         public async Task<GeneralResponse<GetSingleStudentResponse>> Handle(GetStudentByIdQuery request, CancellationToken cancellationToken)
@@ -57,10 +63,25 @@ namespace SchoolManagmentSystem.Core.Features.students.Queries.Handlers
 
         public async Task<PaginatedResult<GetStudentPaginatedListResponse>> Handle(GetStudentListQueryPaginated request, CancellationToken cancellationToken)
         {
-            Expression<Func<Student, GetStudentPaginatedListResponse>> expression = e => new GetStudentPaginatedListResponse(e.StudID, e.NameAr, e.Address, e.Department.DNameEn);
+            Expression<Func<Student, GetStudentPaginatedListResponse>> expression = e => new GetStudentPaginatedListResponse(e.StudID, e.GetGeneralLocalizedEntity(e.NameAr, e.NameEn), e.Address, e.Department.GetGeneralLocalizedEntity(e.Department.DNameAr, e.Department.DNameEn))
+            {
+
+            };
             var query = _studentService.FilterStudentWithpaginatedQueryable(request.OrderBy, request.Search);
             var Filteredquery = await query.Select(expression).ToPaginatedListAsynd(request.PageNumber, request.PageSize);
+            Filteredquery.Meta = new
+            {
+
+                TotalCount = Filteredquery.TotalCount,
+                PageSize = Filteredquery.PageSize,
+                PageNumber = Filteredquery.CurruntPage,
+                TotalPages = Filteredquery.TotalPages,
+                HasNextPage = Filteredquery.HasNextPage,
+                HasPreviousPage = Filteredquery.HasPerviousPage
+            };
             return Filteredquery;
+
+
         }
 
 

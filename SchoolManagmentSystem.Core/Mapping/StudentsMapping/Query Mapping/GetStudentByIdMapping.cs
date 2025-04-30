@@ -8,7 +8,7 @@ namespace SchoolManagmentSystem.Core.Mapping.StudentsMapping
         public void GetStudentByIdMapping()
         {
             CreateMap<Student, GetSingleStudentResponse>()
-                 .ForMember(dest => dest.DepartmentName, options => options.MapFrom(src => src.Department.DNameEn))
+                 .ForMember(dest => dest.DepartmentName, options => options.MapFrom(src => src.Department.GetGeneralLocalizedEntity(src.Department.DNameAr, src.Department.DNameEn)))
                  .ForMember(dest => dest.Name, options => options.MapFrom(src => src.GetGeneralLocalizedEntity(src.NameAr, src.NameEn)));
         }
     }
