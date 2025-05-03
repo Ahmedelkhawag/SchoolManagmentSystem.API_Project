@@ -18,7 +18,10 @@ namespace SchoolManagmentSystem.API
     {
         public static void Main(string[] args)
         {
+            #region builder object
+
             var builder = WebApplication.CreateBuilder(args);
+            #endregion
 
             // Add services to the container.
             #region Controller Services
@@ -71,9 +74,14 @@ namespace SchoolManagmentSystem.API
             #endregion
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-            builder.Services.AddOpenApi();
+            #region open api service
 
+            builder.Services.AddOpenApi();
+            #endregion
+            #region App obj
             var app = builder.Build();
+
+            #endregion
 
             // Configure the HTTP request pipeline.
             #region HTTP request pipeline

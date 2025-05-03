@@ -27,7 +27,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
         #region Actions
         public void ApplyValidationRules()
         {
-            RuleFor(s => s.Name).NotEmpty().WithMessage(_localizer[SharedResourseKeys.NotEmpty])
+            RuleFor(s => s.NameAr).NotEmpty().WithMessage(_localizer[SharedResourseKeys.NotEmpty])
                   .NotNull().WithMessage(_localizer[SharedResourseKeys.NotNull])
                   .MaximumLength(50).WithMessage(_localizer[SharedResourseKeys.MaximumLength])
                   .MinimumLength(2).WithMessage(_localizer[SharedResourseKeys.MinimumLength]);
@@ -40,7 +40,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
 
         public void ApplyCustomValidationRules()
         {
-            RuleFor(s => s.Name)
+            RuleFor(s => s.NameAr)
                 .MustAsync(async (key, CancellationToken) => !await _studentService.IsNameExist(key))
                 .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
 

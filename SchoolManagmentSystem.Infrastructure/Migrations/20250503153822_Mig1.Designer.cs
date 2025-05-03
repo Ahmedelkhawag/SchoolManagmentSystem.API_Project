@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolManagmentSystem.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using SchoolManagmentSystem.Infrastructure.Data;
 namespace SchoolManagmentSystem.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250503153822_Mig1")]
+    partial class Mig1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,14 +34,16 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DID"));
 
                     b.Property<string>("DNameAr")
+                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("DNameEn")
+                        .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
-                    b.Property<int?>("InsManagerId")
+                    b.Property<int>("InsManagerId")
                         .HasColumnType("int");
 
                     b.HasKey("DID");
@@ -87,24 +92,28 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("InsId"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DId")
+                    b.Property<int>("DId")
                         .HasColumnType("int");
 
                     b.Property<string>("ENameAr")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ENameEn")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Position")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Salary")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int?>("SupervisorId")
+                    b.Property<int>("SupervisorId")
                         .HasColumnType("int");
 
                     b.HasKey("InsId");
@@ -125,6 +134,7 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("StudID"));
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -132,14 +142,17 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("NameAr")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("NameEn")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("Phone")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -157,9 +170,6 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
 
                     b.Property<int>("SubID")
                         .HasColumnType("int");
-
-                    b.Property<decimal?>("grade")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("StudID", "SubID");
 
@@ -196,7 +206,9 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                 {
                     b.HasOne("SchoolManagmentSystem.Data.Entities.Instructor", "Instructor")
                         .WithOne("DepartmentManager")
-                        .HasForeignKey("SchoolManagmentSystem.Data.Entities.Department", "InsManagerId");
+                        .HasForeignKey("SchoolManagmentSystem.Data.Entities.Department", "InsManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Instructor");
                 });
@@ -243,11 +255,15 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
                 {
                     b.HasOne("SchoolManagmentSystem.Data.Entities.Department", "Department")
                         .WithMany("Instructors")
-                        .HasForeignKey("DId");
+                        .HasForeignKey("DId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("SchoolManagmentSystem.Data.Entities.Instructor", "Supervisor")
                         .WithMany("Instructors")
-                        .HasForeignKey("SupervisorId");
+                        .HasForeignKey("SupervisorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Department");
 
@@ -293,7 +309,8 @@ namespace SchoolManagmentSystem.Infrastructure.Migrations
 
             modelBuilder.Entity("SchoolManagmentSystem.Data.Entities.Instructor", b =>
                 {
-                    b.Navigation("DepartmentManager");
+                    b.Navigation("DepartmentManager")
+                        .IsRequired();
 
                     b.Navigation("Ins_Subjects");
 

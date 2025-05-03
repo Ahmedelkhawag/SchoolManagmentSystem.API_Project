@@ -23,7 +23,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
         #region Actions
         public void ApplyValidationRules()
         {
-            RuleFor(s => s.Name).NotEmpty().WithMessage("Name is Required..")
+            RuleFor(s => s.NameAr).NotEmpty().WithMessage("Name is Required..")
                   .NotNull().WithMessage("Name is Required And can't be null ..")
                   .MaximumLength(50).WithMessage("Name must be less than 50 characters")
                   .MinimumLength(2).WithMessage("Name must be more than 2 characters");
@@ -36,7 +36,7 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
 
         public void ApplyCustomValidationRules()
         {
-            RuleFor(s => s.Name)
+            RuleFor(s => s.NameAr)
                 .MustAsync(async (model, key, CancellationToken) => !await _studentService.IsNameExistWithDidderentId(key, model.Id))
                 .WithMessage("Student with this name already exists");
 

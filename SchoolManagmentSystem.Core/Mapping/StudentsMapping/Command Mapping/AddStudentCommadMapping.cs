@@ -1,10 +1,5 @@
 ﻿using SchoolManagmentSystem.Core.Features.students.Commads.Models;
 using SchoolManagmentSystem.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Core.Mapping.StudentsMapping
 {
@@ -13,7 +8,9 @@ namespace SchoolManagmentSystem.Core.Mapping.StudentsMapping
         public void AddStudentMapping()
         {
             CreateMap<AddStudentCommand, Student>()
-                    .ForMember(dest => dest.DID, options => options.MapFrom(src => src.DepartmentId));
+                    .ForMember(dest => dest.DID, options => options.MapFrom(src => src.DepartmentId))
+                    .ForMember(dest => dest.NameAr, options => options.MapFrom(src => src.NameAr))
+                    .ForMember(dest => dest.NameEn, options => options.MapFrom(src => src.NameEn));
         }
     }
 }
