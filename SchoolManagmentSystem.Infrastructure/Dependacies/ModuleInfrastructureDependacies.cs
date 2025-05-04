@@ -3,11 +3,6 @@ using SchoolManagmentSystem.Infrastructure.InfrastructureBases.Abstract;
 using SchoolManagmentSystem.Infrastructure.InfrastructureBases.Implmentation;
 using SchoolManagmentSystem.Infrastructure.Repositories.Implementations;
 using SchoolManagmentSystem.Infrastructure.Repositories.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Infrastructure.Dependacies
 {
@@ -17,6 +12,11 @@ namespace SchoolManagmentSystem.Infrastructure.Dependacies
         {
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient(typeof(IGenericRepositoryAsync<>), typeof(GenericRepositoryAsync<>));
+            services.AddTransient<IDepartmentRepository, DepartmentRepository>();
+            services.AddTransient<IInstructorRepository, InstructorRepository>();
+            services.AddTransient<ISubjectRepository, SubjectRepository>();
+
+
             return services;
         }
 

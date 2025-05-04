@@ -12,7 +12,6 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<string> UpdateStudentAsync(Student student);
         Task<string> DeleteStudentAsync(int Id);
         Task<bool> IsNameExist(string name);
-
         Task<bool> IsNameExistWithDidderentId(string name, int Id);
         IQueryable<Student> GetAllStudentsQueryable();
         IQueryable<Student> FilterStudentWithpaginatedQueryable(StudentOrderingEnum OrderBy, string Search);

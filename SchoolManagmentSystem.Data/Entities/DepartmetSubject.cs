@@ -1,9 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SchoolManagmentSystem.Data.Commons;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolManagmentSystem.Data.Entities
 {
-    public class DepartmetSubject
+    public class DepartmetSubject : GeneralLocalizableEntities
     {
         //[Key]
         //public int DeptSubID { get; set; }

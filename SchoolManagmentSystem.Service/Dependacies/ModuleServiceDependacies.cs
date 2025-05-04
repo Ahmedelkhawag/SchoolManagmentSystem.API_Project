@@ -1,11 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using SchoolManagmentSystem.Service.Abstracts;
 using SchoolManagmentSystem.Service.Implmentations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SchoolManagmentSystem.Service.Dependacies
 {
@@ -14,6 +9,7 @@ namespace SchoolManagmentSystem.Service.Dependacies
         public static IServiceCollection AddServiceDependacies(this IServiceCollection services)
         {
             services.AddTransient<IStudentService, StudentService>();
+            services.AddTransient<IDepartmentService, DepartmentService>();
             return services;
         }
     }
