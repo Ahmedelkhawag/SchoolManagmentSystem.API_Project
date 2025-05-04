@@ -44,6 +44,10 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
                 .MustAsync(async (key, CancellationToken) => !await _studentService.IsNameExist(key))
                 .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
 
+            RuleFor(s => s.NameEn)
+               .MustAsync(async (key, CancellationToken) => !await _studentService.IsNameExist(key))
+               .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
+
 
         }
         #endregion

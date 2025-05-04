@@ -1,5 +1,7 @@
 ﻿using FluentValidation;
+using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
+using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
@@ -8,13 +10,15 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
     {
         #region Fields
         private readonly IStudentService _studentService;
+        private readonly IStringLocalizer<SharedResourse> _localizer;
 
         #endregion
 
         #region Ctors
-        public EditStudentValidator(IStudentService studentService)
+        public EditStudentValidator(IStudentService studentService, IStringLocalizer<SharedResourse> localizer)
         {
             _studentService = studentService;
+            _localizer = localizer;
             ApplyValidationRules();
             ApplyCustomValidationRules();
         }
@@ -40,6 +44,9 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
                 .MustAsync(async (model, key, CancellationToken) => !await _studentService.IsNameExistWithDidderentId(key, model.Id))
                 .WithMessage("Student with this name already exists");
 
+            RuleFor(s => s.NameEn)
+              .MustAsync(async (model, key, CancellationToken) => !await _studentService.IsNameExistWithDidderentId(key, model.Id))
+              .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
 
         }
         #endregion

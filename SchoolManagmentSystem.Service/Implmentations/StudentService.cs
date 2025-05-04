@@ -131,7 +131,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<bool> IsNameExistWithDidderentId(string name, int Id)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(name) && s.StudID != Id).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameEn.Equals(name) && s.StudID != Id).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return true;
