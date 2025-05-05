@@ -16,10 +16,19 @@ namespace SchoolManagmentSystem.Service.Implmentations
         {
             _departmentRepository = departmentRepository;
         }
+
+
         #endregion
 
 
         #region Functions
+
+        public async Task<List<Department>> GetAllDepartmentsAsync()
+        {
+            var dept = await _departmentRepository.GetAllDepartmentAsync();
+            return dept;
+        }
+
         public async Task<Department> GetDepartmentByIdAsync(int id)
         {
             var dept = await _departmentRepository.GetTableNoTracking()

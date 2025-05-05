@@ -19,6 +19,11 @@ namespace SchoolManagmentSystem.Service.Implmentations
             _studentRepository = studentRepository;
         }
 
+
+        #endregion
+
+        #region Interface Implmentations
+
         public async Task<string> AddStudentAsync(Student student)
         {
             var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(student.NameAr)).FirstOrDefaultAsync();
@@ -89,9 +94,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
             return query;
         }
-        #endregion
 
-        #region Interface Implmentations
         public async Task<List<Student>> GetAllStudentsAsync()
         {
             return await _studentRepository.GetAllStudentsAsync();

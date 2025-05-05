@@ -12,7 +12,8 @@ using System.Linq.Expressions;
 
 namespace SchoolManagmentSystem.Core.Features.Departments.Queries.Handlers
 {
-    public class DepartmentQueryHandler : ResponseHandler, IRequestHandler<GetDepartmentByIdQuery, GeneralResponse<GetDepartmentByIdQueryResponse>>
+    public class DepartmentQueryHandler : ResponseHandler, IRequestHandler<GetDepartmentByIdQuery, GeneralResponse<GetDepartmentByIdQueryResponse>>,
+        IRequestHandler<GetAllDepartmentsWithOutIncludeQuery, GeneralResponse<List<GetAllDepartmentsWithOutIncludeQueryResponse>>>
     {
         #region Fields
         private readonly IDepartmentService _departmentService;
@@ -35,7 +36,7 @@ namespace SchoolManagmentSystem.Core.Features.Departments.Queries.Handlers
         #region Handlers
         public async Task<GeneralResponse<GetDepartmentByIdQueryResponse>> Handle(GetDepartmentByIdQuery request, CancellationToken cancellationToken)
         {
-            //Service get by Id including students, instructors and subjects
+            //Service get by Id including instructors and subjects
             var response = await _departmentService.GetDepartmentByIdAsync(request.Id);
             //Check if response is null
             if (response == null)
@@ -55,6 +56,17 @@ namespace SchoolManagmentSystem.Core.Features.Departments.Queries.Handlers
             mappedResponse.StudentList = paginatedStds;
             return Success(mappedResponse);
 
+        }
+
+        public async Task<GeneralResponse<List<GetAllDepartmentsWithOutIncludeQueryResponse>>> Handle(GetAllDepartmentsWithOutIncludeQuery request, CancellationToken cancellationToken)
+        {
+            var response = await _departmentService.GetAllDepartmentsAsync();
+            if (response == null)
+            {
+                return NotFound<List<GetAllDepartmentsWithOutIncludeQueryResponse>>(_localizer[SharedResourseKeys.NotFound]);
+            }
+            var mappedResponse = _mapper.Map<List<GetAllDepartmentsWithOutIncludeQueryResponse>>(response);
+            return Success(mappedResponse);
         }
 
         #endregion

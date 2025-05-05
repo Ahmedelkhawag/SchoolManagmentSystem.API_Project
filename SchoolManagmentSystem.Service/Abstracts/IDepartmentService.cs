@@ -5,5 +5,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
     public interface IDepartmentService
     {
         Task<Department> GetDepartmentByIdAsync(int id);
+        Task<List<Department>> GetAllDepartmentsAsync();
+
     }
 }

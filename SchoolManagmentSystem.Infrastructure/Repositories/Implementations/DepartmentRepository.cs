@@ -19,12 +19,20 @@ namespace SchoolManagmentSystem.Infrastructure.Repositories.Implementations
             _context = context;
             _dbSet = context.Set<Department>();
         }
+
+
         #endregion
         #region Interface implmentations
         //public async Task<List<Department>> GetAllDepartmentsAsync()
         //{
         //    return await _dbSet.ToListAsync();
         //}
+
+        public Task<List<Department>> GetAllDepartmentAsync()
+        {
+            var depts = _dbSet.AsNoTracking().Include(d => d.Instructor).ToListAsync();
+            return depts;
+        }
         #endregion
     }
 }

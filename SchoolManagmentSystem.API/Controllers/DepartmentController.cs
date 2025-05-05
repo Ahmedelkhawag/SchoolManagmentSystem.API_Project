@@ -20,5 +20,15 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return CustomResult(dept);
         }
+        [HttpGet(RouterParams.DepartmentRouting.list)]
+        public async Task<IActionResult> GetAllDepartmentsAsync()
+        {
+            var dept = await Mediator.Send(new GetAllDepartmentsWithOutIncludeQuery());
+            if (dept == null)
+            {
+                return NotFound("Department not found.");
+            }
+            return CustomResult(dept);
+        }
     }
 }
