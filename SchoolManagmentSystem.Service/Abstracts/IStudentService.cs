@@ -14,6 +14,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<bool> IsNameExist(string name);
         Task<bool> IsNameExistWithDidderentId(string name, int Id);
         IQueryable<Student> GetAllStudentsQueryable();
+        IQueryable<Student> GetAllStudentsByDepartmentIdQueryable(int deptId);
         IQueryable<Student> FilterStudentWithpaginatedQueryable(StudentOrderingEnum OrderBy, string Search);
 
 

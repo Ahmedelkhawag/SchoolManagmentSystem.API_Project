@@ -17,5 +17,17 @@
             public const string Delete = Prefix + SingleIdRoute;
 
         }
+
+        public static class DepartmentRouting
+        {
+            public const string Prefix = $"{Rule}/Department";
+            public const string list = $"{Prefix}/list";
+            public const string paginatedList = $"{Prefix}/paginatedList";
+            public const string GetById = Prefix + SingleIdRoute;
+            public const string Create = Prefix + "Create";
+            public const string Update = Prefix + SingleIdRoute;
+            public const string Delete = Prefix + SingleIdRoute;
+
+        }
     }
 }

@@ -24,7 +24,6 @@ namespace SchoolManagmentSystem.Service.Implmentations
         {
             var dept = await _departmentRepository.GetTableNoTracking()
                 .Include(d => d.Instructors)
-                .Include(d => d.Students)
                 .Include(d => d.DepartmentSubjects)
                 .ThenInclude(d => d.Subject)
                 .Include(d => d.Instructor)

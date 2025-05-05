@@ -97,6 +97,12 @@ namespace SchoolManagmentSystem.Service.Implmentations
             return await _studentRepository.GetAllStudentsAsync();
         }
 
+        public async Task<IQueryable<Student>> GetAllStudentsByDepartmentIdQueryableAsync(int deptId)
+        {
+            var stds = await _studentRepository.GetTableNoTracking().Where(s => s.DID == deptId).ToListAsync();
+            return stds.AsQueryable();
+        }
+
         public IQueryable<Student> GetAllStudentsQueryable()
         {
             return _studentRepository.GetTableNoTracking().Include(s => s.Department).AsQueryable();
@@ -148,6 +154,12 @@ namespace SchoolManagmentSystem.Service.Implmentations
             await _studentRepository.UpdateAsync(student);
             return ("Student updated successfully");
 
+        }
+
+        public IQueryable<Student> GetAllStudentsByDepartmentIdQueryable(int deptId)
+        {
+            var stds = _studentRepository.GetTableNoTracking().Where(s => s.DID == deptId).AsQueryable();
+            return stds;
         }
 
         #endregion
