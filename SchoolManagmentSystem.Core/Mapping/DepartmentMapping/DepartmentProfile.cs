@@ -8,6 +8,8 @@ namespace SchoolManagmentSystem.Core.Mapping.DepartmentMapping
         {
             GetDeptByIdMapping();
             GetAllDepartmentsWithOutIncludeMapping();
+            AddDepartmentMapping();
+            EditDepartmentMapping();
         }
     }
 }

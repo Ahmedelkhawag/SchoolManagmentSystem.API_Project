@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
+using SchoolManagmentSystem.Core.Features.Departments.Commands.Models;
 using SchoolManagmentSystem.Core.Features.Departments.Queries.Models;
 using SchoolManagmentSystem.Data.AppMetaData;
 
@@ -29,6 +30,34 @@ namespace SchoolManagmentSystem.API.Controllers
                 return NotFound("Department not found.");
             }
             return CustomResult(dept);
+        }
+        [HttpPost(RouterParams.DepartmentRouting.Create)]
+        public async Task<IActionResult> CreateDepartment([FromBody] AddDepartmentCommand departmentCommand)
+        {
+            var response = await Mediator.Send(departmentCommand);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors, Data = departmentCommand });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+
+
+        }
+        [HttpPut(RouterParams.DepartmentRouting.Update)]
+        public async Task<IActionResult> UpdateDepartment([FromBody] EditDepartmentCommand departmentCommand)
+        {
+            var response = await Mediator.Send(departmentCommand);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors, Data = departmentCommand });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
         }
     }
 }
