@@ -59,5 +59,18 @@ namespace SchoolManagmentSystem.API.Controllers
                 return CustomResult(response);
             }
         }
+        [HttpDelete(RouterParams.DepartmentRouting.Delete)]
+        public async Task<IActionResult> DeleteDepartment(int id)
+        {
+            var response = await Mediator.Send(new DeleteDepartmentCommand(id));
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
     }
 }

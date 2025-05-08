@@ -9,6 +9,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<List<Department>> GetAllDepartmentsAsync();
         Task<string> AddDepartmentAsync(Department department);
         Task<string> UpdateDepartmentAsync(Department department);
+        Task<string> DeleteDepartmentAsync(int id);
 
         Task<bool> IsManagerExist(int id);
 

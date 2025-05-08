@@ -133,6 +133,44 @@ namespace SchoolManagmentSystem.Service.Implmentations
             return dept;
         }
 
+        public async Task<string> DeleteDepartmentAsync(int id)
+        {
+            var transaction = _departmentRepository.BeginTransaction();
+
+            try
+            {
+                var dept = await GetDepartmentByIdAsyncWithoutInclude(id);
+                //var dept = await _departmentRepository.GetTableNoTracking()
+                //.Include(d => d.DepartmentSubjects)
+                //.FirstOrDefaultAsync(d => d.DID == id);
+
+                if (dept is null)
+
+                {
+                    return ("Department not found");
+                }
+                else
+                {
+
+                    await _departmentRepository.DeleteAsync(dept);
+                    await transaction.CommitAsync();
+                    return ("Department deleted successfully");
+                }
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync();
+                return ("An error occurred while deleting the department");
+
+            }
+            finally
+            {
+                await transaction.DisposeAsync();
+            }
+
+
+        }
+
         #endregion
 
 
