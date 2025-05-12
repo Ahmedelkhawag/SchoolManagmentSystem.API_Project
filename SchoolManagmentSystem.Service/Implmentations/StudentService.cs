@@ -26,7 +26,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<string> AddStudentAsync(Student student)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(student.NameAr)).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameEn.Equals(student.NameEn)).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return ("Student already exists");
@@ -127,7 +127,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         public async Task<bool> IsNameExist(string name)
         {
-            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameAr.Equals(name)).FirstOrDefaultAsync();
+            var std = await _studentRepository.GetTableNoTracking().Where(s => s.NameEn.Equals(name)).FirstOrDefaultAsync();
             if (std is not null)
             {
                 return true;

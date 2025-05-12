@@ -171,6 +171,11 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         }
 
+        public async Task<bool> IsDepartmentIdExist(int id)
+        {
+            return _departmentRepository.GetTableNoTracking().Any(d => d.DID == id);
+        }
+
         #endregion
 
 

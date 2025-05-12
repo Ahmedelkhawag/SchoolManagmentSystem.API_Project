@@ -162,4 +162,7 @@
   <data name="AlreadyExists" xml:space="preserve">
     <value>Field with this name already exists</value>
   </data>
+  <data name="NotExists" xml:space="preserve">
+    <value>Field is Not Exists</value>
+  </data>
 </root>

@@ -12,6 +12,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<string> DeleteDepartmentAsync(int id);
 
         Task<bool> IsManagerExist(int id);
+        Task<bool> IsDepartmentIdExist(int id);
 
     }
 }

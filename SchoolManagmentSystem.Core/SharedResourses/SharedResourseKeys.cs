@@ -16,5 +16,6 @@
         public const string MaximumLength = "MaximumLength";
         public const string MinimumLength = "MinimumLength";
         public const string AlreadyExists = "AlreadyExists";
+        public const string NotExists = "NotExists";
     }
 }

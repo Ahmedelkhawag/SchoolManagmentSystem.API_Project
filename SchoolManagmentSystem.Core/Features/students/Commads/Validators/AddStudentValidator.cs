@@ -11,14 +11,18 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
         #region Fields
         private readonly IStudentService _studentService;
         private readonly IStringLocalizer<SharedResourse> _localizer;
+        private readonly IDepartmentService _departmentService;
 
         #endregion
 
         #region Ctors
-        public AddStudentValidator(IStudentService studentService, IStringLocalizer<SharedResourse> localizer)
+        public AddStudentValidator(IStudentService studentService,
+            IDepartmentService departmentService,
+                IStringLocalizer<SharedResourse> localizer)
         {
             _studentService = studentService;
             _localizer = localizer;
+            _departmentService = departmentService;
             ApplyValidationRules();
             ApplyCustomValidationRules();
         }
@@ -47,6 +51,10 @@ namespace SchoolManagmentSystem.Core.Features.students.Commads.Validators
             RuleFor(s => s.NameEn)
                .MustAsync(async (key, CancellationToken) => !await _studentService.IsNameExist(key))
                .WithMessage(_localizer[SharedResourseKeys.AlreadyExists]);
+
+            RuleFor(s => s.DepartmentId)
+               .MustAsync(async (model, key, CancellationToken) => await _departmentService.IsDepartmentIdExist(key))
+               .WithMessage(_localizer[SharedResourseKeys.NotExists]);
 
 
         }
