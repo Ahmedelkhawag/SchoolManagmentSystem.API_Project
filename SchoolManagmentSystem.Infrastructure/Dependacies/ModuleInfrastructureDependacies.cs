@@ -17,6 +17,8 @@ namespace SchoolManagmentSystem.Infrastructure.Dependacies
             services.AddTransient<ISubjectRepository, SubjectRepository>();
 
 
+
+
             return services;
         }
 

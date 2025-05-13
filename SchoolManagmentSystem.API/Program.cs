@@ -1,10 +1,12 @@
 
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Scalar.AspNetCore;
 using SchoolManagmentSystem.Core.CoreDependacies;
 using SchoolManagmentSystem.Core.Middlewares;
+using SchoolManagmentSystem.Data.Entities.Identity;
 using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
 using SchoolManagmentSystem.Service.Dependacies;
@@ -35,9 +37,34 @@ namespace SchoolManagmentSystem.API
                 options.UseSqlServer(builder.Configuration.GetConnectionString("CS")));
 
             #endregion
+            #region Identity Services
+            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
+                .AddDefaultTokenProviders();
+            #endregion  
             #region InfraStructure Services
 
             builder.Services.AddInfrastructureDependacies();
+
 
             #endregion
             #region Service Layer Services
