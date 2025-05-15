@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.User.Commands.Models;
+using SchoolManagmentSystem.Core.Features.User.Queries.Models;
 using SchoolManagmentSystem.Data.AppMetaData;
 
 namespace SchoolManagmentSystem.API.Controllers
@@ -22,5 +23,31 @@ namespace SchoolManagmentSystem.API.Controllers
                 return CustomResult(response);
             }
         }
+        [HttpGet(RouterParams.UserRouting.paginatedList)]
+        public async Task<IActionResult> GetPaginatedUsers([FromQuery] GetUsersListQuery query)
+        {
+
+            var response = await Mediator.Send(query);
+            if (response.Succeeded)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+
+        [HttpGet(RouterParams.UserRouting.GetById)]
+        public async Task<IActionResult> GetUserById([FromRoute] int id)
+        {
+            var user = await Mediator.Send(new GetUserByIdQuery(id));
+            if (user is null)
+            {
+                return NotFound("user not found");
+            }
+            return CustomResult(user);
+        }
+
     }
 }
