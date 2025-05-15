@@ -165,4 +165,10 @@
   <data name="NotExists" xml:space="preserve">
     <value>ليس موجود</value>
   </data>
+  <data name="PasswordDoesNotMatch" xml:space="preserve">
+    <value>كلمة السر ليست متطابقة</value>
+  </data>
+  <data name="EmailIsNotValid" xml:space="preserve">
+    <value>البريد الاكتروني ليس بالصيغة الصحيحة</value>
+  </data>
 </root>

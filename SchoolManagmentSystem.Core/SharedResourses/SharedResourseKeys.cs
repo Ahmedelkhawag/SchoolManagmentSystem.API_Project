@@ -17,5 +17,7 @@
         public const string MinimumLength = "MinimumLength";
         public const string AlreadyExists = "AlreadyExists";
         public const string NotExists = "NotExists";
+        public const string PasswordDoesNotMatch = "PasswordDoesNotMatch";
+        public const string EmailIsNotValid = "EmailIsNotValid";
     }
 }

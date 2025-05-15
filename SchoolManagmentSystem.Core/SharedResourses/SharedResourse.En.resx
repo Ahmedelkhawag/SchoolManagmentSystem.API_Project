@@ -165,4 +165,10 @@
   <data name="NotExists" xml:space="preserve">
     <value>Field is Not Exists</value>
   </data>
+  <data name="PasswordDoesNotMatch" xml:space="preserve">
+    <value>Password and confirm password Does Not Match</value>
+  </data>
+  <data name="EmailIsNotValid" xml:space="preserve">
+    <value>Email  Is Not Valid</value>
+  </data>
 </root>
