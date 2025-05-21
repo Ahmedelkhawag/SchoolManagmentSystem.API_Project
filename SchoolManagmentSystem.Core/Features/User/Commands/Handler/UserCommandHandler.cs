@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.User.Commands.Models;
@@ -9,7 +10,8 @@ using SchoolManagmentSystem.Data.Entities.Identity;
 
 namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 {
-    public class UserCommandHandler : ResponseHandler, IRequestHandler<AddUserCommand, GeneralResponse<string>>
+    public class UserCommandHandler : ResponseHandler, IRequestHandler<AddUserCommand, GeneralResponse<string>>,
+        IRequestHandler<UpdateUserCommand, GeneralResponse<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResourse> _localizer;
@@ -58,6 +60,34 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
             }
 
 
+        }
+
+        public async Task<GeneralResponse<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        {
+            //check if user is exist
+            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            if (user != null)
+            {
+                //Map User
+                var updatedUser = _mapper.Map(request, user);
+                //Update User
+                var result = await _userManager.UpdateAsync(updatedUser);
+                //Check if the update was successful
+                if (result.Succeeded)
+                {
+                    return Success<string>("User Updated Successfully");
+                }
+                else
+                {
+                    return UnprocessableEntity<string>(string.Join(",", result.Errors.Select(x => x.Description)));
+                }
+
+            }
+            //If user not found
+            else
+            {
+                return NotFound<string>(_localizer[SharedResourseKeys.NotFound]);
+            }
         }
         #endregion
     }

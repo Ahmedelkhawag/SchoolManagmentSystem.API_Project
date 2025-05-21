@@ -48,6 +48,23 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return CustomResult(user);
         }
+        [HttpPut(RouterParams.UserRouting.Update)]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserCommand userCommand)
+        {
+            if (id != userCommand.Id)
+            {
+                return BadRequest("Id mismatch");
+            }
+            var response = await Mediator.Send(userCommand);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors, Data = userCommand });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
 
     }
 }
