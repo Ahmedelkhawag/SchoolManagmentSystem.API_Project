@@ -80,6 +80,20 @@ namespace SchoolManagmentSystem.API.Controllers
             }
 
         }
+        [HttpPut(RouterParams.UserRouting.ChangePassword)]
+        public async Task<IActionResult> ChangePassword([FromBody] ChangeUserPasswordCommand command)
+        {
+
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
 
     }
 }

@@ -39,6 +39,7 @@
             public const string Create = Prefix + "Create";
             public const string Update = Prefix + SingleIdRoute;
             public const string Delete = Prefix + SingleIdRoute;
+            public const string ChangePassword = $"{Prefix}/ChangePassword";
 
         }
     }

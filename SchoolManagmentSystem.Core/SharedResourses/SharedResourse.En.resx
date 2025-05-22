@@ -171,4 +171,7 @@
   <data name="EmailIsNotValid" xml:space="preserve">
     <value>Email  Is Not Valid</value>
   </data>
+  <data name="Greaterthan" xml:space="preserve">
+    <value>id should be greater than 0</value>
+  </data>
 </root>

@@ -19,5 +19,6 @@
         public const string NotExists = "NotExists";
         public const string PasswordDoesNotMatch = "PasswordDoesNotMatch";
         public const string EmailIsNotValid = "EmailIsNotValid";
+        public const string Greaterthan = "Greaterthan";
     }
 }

@@ -171,4 +171,7 @@
   <data name="EmailIsNotValid" xml:space="preserve">
     <value>البريد الاكتروني ليس بالصيغة الصحيحة</value>
   </data>
+  <data name="Greaterthan" xml:space="preserve">
+    <value>الرقم التعريفي يجب ان يكون اكبر من الصفر </value>
+  </data>
 </root>
