@@ -11,7 +11,8 @@ using SchoolManagmentSystem.Data.Entities.Identity;
 namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 {
     public class UserCommandHandler : ResponseHandler, IRequestHandler<AddUserCommand, GeneralResponse<string>>,
-        IRequestHandler<UpdateUserCommand, GeneralResponse<string>>
+        IRequestHandler<UpdateUserCommand, GeneralResponse<string>>,
+        IRequestHandler<DeleteUserCommand, GeneralResponse<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResourse> _localizer;
@@ -65,11 +66,11 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
         public async Task<GeneralResponse<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             //check if user is exist
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
-            if (user != null)
+            var Existinguser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            if (Existinguser != null)
             {
                 //Map User
-                var updatedUser = _mapper.Map(request, user);
+                var updatedUser = _mapper.Map(request, Existinguser);
                 //Update User
                 var result = await _userManager.UpdateAsync(updatedUser);
                 //Check if the update was successful
@@ -84,6 +85,27 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 
             }
             //If user not found
+            else
+            {
+                return NotFound<string>(_localizer[SharedResourseKeys.NotFound]);
+            }
+        }
+
+        public async Task<GeneralResponse<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == request.Id);
+            if (user != null)
+            {
+                var result = await _userManager.DeleteAsync(user);
+                if (result.Succeeded)
+                {
+                    return Deleted<string>();
+                }
+                else
+                {
+                    return UnprocessableEntity<string>(string.Join(",", result.Errors.Select(x => x.Description)));
+                }
+            }
             else
             {
                 return NotFound<string>(_localizer[SharedResourseKeys.NotFound]);
