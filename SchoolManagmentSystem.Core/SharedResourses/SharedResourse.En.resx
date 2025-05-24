@@ -174,4 +174,16 @@
   <data name="Greaterthan" xml:space="preserve">
     <value>id should be greater than 0</value>
   </data>
+  <data name="UserName" xml:space="preserve">
+    <value>UserName</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="UserNameIsNotExist" xml:space="preserve">
+    <value>User Name Is Not Exist</value>
+  </data>
+  <data name="PasswordOrUserNameIsWrong" xml:space="preserve">
+    <value>Password Or UserName Is Wrong</value>
+  </data>
 </root>

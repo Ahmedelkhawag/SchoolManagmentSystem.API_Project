@@ -20,5 +20,9 @@
         public const string PasswordDoesNotMatch = "PasswordDoesNotMatch";
         public const string EmailIsNotValid = "EmailIsNotValid";
         public const string Greaterthan = "Greaterthan";
+        public const string UserName = "UserName";
+        public const string Password = "Password";
+        public const string UserNameIsNotExist = "UserNameIsNotExist";
+        public const string PasswordOrUserNameIsWrong = "PasswordOrUserNameIsWrong";
     }
 }

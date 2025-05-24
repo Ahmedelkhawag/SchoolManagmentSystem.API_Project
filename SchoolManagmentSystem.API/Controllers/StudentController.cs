@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.students.Commads.Models;
 using SchoolManagmentSystem.Core.Features.students.Queries.Models;
@@ -8,6 +9,7 @@ namespace SchoolManagmentSystem.API.Controllers
 {
     // [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StudentController : AppControllerBase
     {
 

@@ -174,4 +174,16 @@
   <data name="Greaterthan" xml:space="preserve">
     <value>الرقم التعريفي يجب ان يكون اكبر من الصفر </value>
   </data>
+  <data name="UserName" xml:space="preserve">
+    <value>اسم المستخدم</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>كلمة السر</value>
+  </data>
+  <data name="UserNameIsNotExist" xml:space="preserve">
+    <value>المستخدم عير موجود</value>
+  </data>
+  <data name="PasswordOrUserNameIsWrong" xml:space="preserve">
+    <value>كلمة السر أو اسم المسخدم غير صحيحة</value>
+  </data>
 </root>

@@ -99,6 +99,9 @@ namespace SchoolManagmentSystem.API
                 options.RequestCultureProviders.Insert(0, new QueryStringRequestCultureProvider());
             });
             #endregion
+            #region JWT Service
+            builder.Services.AddJWTServiceRegistration(builder.Configuration);
+            #endregion
 
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
             #region open api service
@@ -132,7 +135,7 @@ namespace SchoolManagmentSystem.API
             var options = app.Services.GetService<IOptions<RequestLocalizationOptions>>();
             app.UseRequestLocalization(options.Value);
             app.UseHttpsRedirection();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
 
