@@ -6,11 +6,12 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.Authentication.Commands.Models;
 using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Helpers;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
 {
-    public class SignInHandler : ResponseHandler, IRequestHandler<SignInCommand, GeneralResponse<string>>
+    public class SignInHandler : ResponseHandler, IRequestHandler<SignInCommand, GeneralResponse<JWTAuthResponse>>
     {
         #region Feilds
 
@@ -34,20 +35,20 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
         #endregion
 
         #region Handlers
-        public async Task<GeneralResponse<string>> Handle(SignInCommand request, CancellationToken cancellationToken)
+        public async Task<GeneralResponse<JWTAuthResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
         {
             //check if user is exist
             var user = await _userManager.FindByNameAsync(request.UserName);
             if (user is null)
             {
-                return NotFound<string>(_localizer[SharedResourseKeys.UserNameIsNotExist]);
+                return NotFound<JWTAuthResponse>(_localizer[SharedResourseKeys.UserNameIsNotExist]);
             }
             //try to sign in
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
             // if faild ? return password or userName is wrong try again
             if (!result.Succeeded)
             {
-                return UnprocessableEntity<string>(_localizer[SharedResourseKeys.PasswordOrUserNameIsWrong]);
+                return UnprocessableEntity<JWTAuthResponse>(_localizer[SharedResourseKeys.PasswordOrUserNameIsWrong]);
             }
             // if success ? generate token
 

@@ -1,9 +1,15 @@
 ﻿using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Helpers;
+using System.Security.Claims;
 
 namespace SchoolManagmentSystem.Service.Abstracts
 {
     public interface IAuthenticationService
     {
-        Task<string> GenerateJWTToken(ApplicationUser user);
+        Task<JWTAuthResponse> GenerateJWTToken(ApplicationUser user);
+        string GenerateRefreshToken();
+        RefreshToken GetRefreshToken(ApplicationUser user);
+        List<Claim> GetUserClaims(ApplicationUser user);
+
     }
 }

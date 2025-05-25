@@ -11,6 +11,7 @@
         public bool ValidateLifetime { get; set; }
         public bool ValidateIssuerSigningKey { get; set; }
         public double ExpirationInMinutes { get; set; }
+        public double RefreshTokenExpirationInDays { get; set; }
 
     }
 
