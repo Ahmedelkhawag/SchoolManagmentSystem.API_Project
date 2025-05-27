@@ -54,6 +54,7 @@
             public const string Delete = Prefix + SingleIdRoute;
             public const string ChangePassword = $"{Prefix}/ChangePassword";
             public const string RefreshToken = $"{Prefix}/Refresh-Token";
+            public const string ValidateToken = $"{Prefix}/Validate-Token";
 
         }
     }
