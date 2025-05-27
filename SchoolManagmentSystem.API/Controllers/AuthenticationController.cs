@@ -22,5 +22,19 @@ namespace SchoolManagmentSystem.API.Controllers
                 return CustomResult(response);
             }
         }
+        [HttpPost(RouterParams.AuthenticationRouting.RefreshToken)]
+        public async Task<IActionResult> RefreshToken(RefreshTokenCommand command)
+        {
+
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message, Errors = response.Errors, Token = response.Data });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
     }
 }

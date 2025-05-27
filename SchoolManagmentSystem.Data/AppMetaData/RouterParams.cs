@@ -53,6 +53,7 @@
             public const string Update = Prefix + SingleIdRoute;
             public const string Delete = Prefix + SingleIdRoute;
             public const string ChangePassword = $"{Prefix}/ChangePassword";
+            public const string RefreshToken = $"{Prefix}/Refresh-Token";
 
         }
     }

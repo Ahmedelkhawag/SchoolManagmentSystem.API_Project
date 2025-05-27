@@ -11,7 +11,9 @@ using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
 {
-    public class SignInHandler : ResponseHandler, IRequestHandler<SignInCommand, GeneralResponse<JWTAuthResponse>>
+    public class SignInHandler : ResponseHandler,
+        IRequestHandler<SignInCommand, GeneralResponse<JWTAuthResponse>>,
+        IRequestHandler<RefreshTokenCommand, GeneralResponse<JWTAuthResponse>>
     {
         #region Feilds
 
@@ -59,6 +61,12 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
 
 
 
+        }
+
+        public async Task<GeneralResponse<JWTAuthResponse>> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationService.CreateRefreshToken(request.AccessToken, request.RefreshToken);
+            return Success(result, null, _localizer[SharedResourseKeys.Succeeded]);
         }
         #endregion
     }
