@@ -236,9 +236,9 @@ namespace SchoolManagmentSystem.Service.Implmentations
                 ValidAudience = _jwtSettings.Audience,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key))
             };
-            var validationResult = tokenHandler.ValidateToken(accessToken, parameters, out SecurityToken validatedToken);
             try
             {
+                var validationResult = tokenHandler.ValidateToken(accessToken, parameters, out SecurityToken validatedToken);
                 if (validationResult is null)
                 {
                     throw new SecurityTokenException("Invalid token.");
