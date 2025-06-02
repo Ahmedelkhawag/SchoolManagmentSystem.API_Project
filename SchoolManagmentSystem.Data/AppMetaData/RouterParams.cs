@@ -57,5 +57,13 @@
             public const string ValidateToken = $"{Prefix}/Validate-Token";
 
         }
+
+        public static class AuthorizationRouting
+        {
+            public const string Prefix = $"{Rule}/Authorization";
+            public const string CreateRole = $"{Prefix}/CreateRole";
+
+
+        }
     }
 }

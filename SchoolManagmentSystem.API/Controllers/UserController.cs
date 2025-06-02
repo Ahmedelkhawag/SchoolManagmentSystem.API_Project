@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.User.Commands.Models;
 using SchoolManagmentSystem.Core.Features.User.Queries.Models;
@@ -9,7 +8,7 @@ namespace SchoolManagmentSystem.API.Controllers
 {
     //[Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    //[Authorize]
     public class UserController : AppControllerBase
     {
         [HttpPost(RouterParams.UserRouting.Create)]

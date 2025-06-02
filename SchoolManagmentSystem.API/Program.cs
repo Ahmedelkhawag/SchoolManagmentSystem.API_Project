@@ -38,7 +38,7 @@ namespace SchoolManagmentSystem.API
 
             #endregion
             #region Identity Services
-            builder.Services.AddIdentity<ApplicationUser, IdentityRole<int>>(options =>
+            builder.Services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
             {
                 // Password settings.
                 options.Password.RequireDigit = true;
@@ -58,9 +58,9 @@ namespace SchoolManagmentSystem.API
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
 
-            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders()
-                .AddDefaultTokenProviders();
-            #endregion  
+            }).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+
+            #endregion
             #region InfraStructure Services
 
             builder.Services.AddInfrastructureDependacies();
