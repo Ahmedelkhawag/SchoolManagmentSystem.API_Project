@@ -9,16 +9,16 @@ using SchoolManagmentSystem.Core.Middlewares;
 using SchoolManagmentSystem.Data.Entities.Identity;
 using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Infrastructure.Dependacies;
+using SchoolManagmentSystem.Infrastructure.SeedingData;
 using SchoolManagmentSystem.Service.Dependacies;
 using System.Globalization;
-
 
 
 namespace SchoolManagmentSystem.API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             #region builder object
 
@@ -110,7 +110,13 @@ namespace SchoolManagmentSystem.API
             #endregion
             #region App obj
             var app = builder.Build();
-
+            using (var scope = app.Services.CreateScope())
+            {
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                await UserSeeding.SeedUsers(userManager);
+                await RoleSeeding.SeedRoles(roleManager);
+            }
             #endregion
 
             // Configure the HTTP request pipeline.

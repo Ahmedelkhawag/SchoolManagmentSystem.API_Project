@@ -61,7 +61,7 @@
         public static class AuthorizationRouting
         {
             public const string Prefix = $"{Rule}/Authorization";
-            public const string CreateRole = $"{Prefix}/CreateRole";
+            public const string CreateRole = $"{Prefix}/Role/Create";
 
 
         }

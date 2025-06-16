@@ -40,7 +40,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
         {
 
 
-            var (Accesstoken, token) = GetJWTToken(user);
+            var (Accesstoken, token) = await GetJWTToken(user);
 
             var refreshToken = GetRefreshToken(user);
             var userRefreshToken = new UserRefreshToken
@@ -62,11 +62,12 @@ namespace SchoolManagmentSystem.Service.Implmentations
                 RefreshToken = refreshToken
             };
         }
-        private (JwtSecurityToken, string) GetJWTToken(ApplicationUser user)
+        private async Task<(JwtSecurityToken, string)> GetJWTToken(ApplicationUser user)
         {
+            var roles = await _userManager.GetRolesAsync(user);
             var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256Signature);
-            var claims = GetUserClaims(user);
+            var claims = GetUserClaims(user, roles);
 
             var Accesstoken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
@@ -102,18 +103,24 @@ namespace SchoolManagmentSystem.Service.Implmentations
             return Convert.ToBase64String(rondomNumber);
         }
 
-        public List<Claim> GetUserClaims(ApplicationUser user)
+        public List<Claim> GetUserClaims(ApplicationUser user, IList<string> roles)
         {
             var userclaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(nameof(UserClaims.Id), user.Id.ToString()),
+                new Claim(ClaimTypes.NameIdentifier, user.UserName),
                 new Claim(nameof(UserClaims.FirstName), user.FirstName??""),
                 new Claim(nameof(UserClaims.LastName), user.LastName??""),
                 new Claim(nameof(UserClaims.PhoneNumber), user.PhoneNumber ?? ""),
-                new Claim(nameof(UserClaims.Email), user.Email ?? "")
+                new Claim(ClaimTypes.Email, user.Email ?? ""),
             };
+
+            if (roles != null && roles.Count > 0)
+            {
+                userclaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+            }
+
             return userclaims;
         }
 
@@ -132,7 +139,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
             ValidateRefreshToken(userRefToken);
 
             var user = await GetUserByIdAsync(userId);
-            var newToken = GetJWTToken(user);
+            var newToken = await GetJWTToken(user);
 
             var newRefreshToken = CreateNewRefreshToken(user, refreshToken, userRefToken.ExpirationDate);
 

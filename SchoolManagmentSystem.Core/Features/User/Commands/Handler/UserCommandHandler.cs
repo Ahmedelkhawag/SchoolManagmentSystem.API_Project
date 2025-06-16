@@ -52,17 +52,10 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 
             //Create User
             var result = await _userManager.CreateAsync(newUser, request.Password);
-            var users = _userManager.Users.Count();
-            if (users >= 0)
-            {
-                //Assign Role to User
-                await _userManager.AddToRoleAsync(newUser, "user");
-            }
-            else
-            {
-                //Assign Role to Admin
-                await _userManager.AddToRoleAsync(newUser, "Admin");
-            }
+
+            //Assign Role to User
+            await _userManager.AddToRoleAsync(newUser, "user");
+
 
             if (result.Succeeded)
             {
