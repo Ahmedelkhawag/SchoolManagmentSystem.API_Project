@@ -7,5 +7,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<string> AddRoleAsync(string roleName);
         Task<bool> IsRoleExist(string roleName);
         Task<string> EditRoleAsync(EditRoleRequest editRoleRequest);
+        Task<string> DeleteRoleAsync(int id);
+        Task<bool> RoleCanBeDeleted(int roleId);
     }
 }

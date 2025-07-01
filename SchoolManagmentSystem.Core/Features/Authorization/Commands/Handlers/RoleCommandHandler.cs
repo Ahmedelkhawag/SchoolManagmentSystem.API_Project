@@ -8,7 +8,8 @@ using SchoolManagmentSystem.Service.Abstracts;
 namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Handlers
 {
     public class RoleCommandHandler : ResponseHandler, IRequestHandler<AddRoleCommand, GeneralResponse<string>>,
-        IRequestHandler<EditRoleCommand, GeneralResponse<string>>
+        IRequestHandler<EditRoleCommand, GeneralResponse<string>>,
+        IRequestHandler<DeleteRoleCommand, GeneralResponse<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResourse> _stringLocalizer;
@@ -52,6 +53,15 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Handlers
             return result.Contains("successfully")
                 ? Success(result, _stringLocalizer["Role Edited Successfully"])
                 : BadRequest<string>(_stringLocalizer["RoleEditFailed"]);
+        }
+
+        public async Task<GeneralResponse<string>> Handle(DeleteRoleCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authorizationService.DeleteRoleAsync(request.RoleId);
+
+            return result.Contains("successfully")
+                ? Success(result, _stringLocalizer["Role Deleted Successfully"])
+                : BadRequest<string>(_stringLocalizer["RoleDeletionFailed"]);
         }
         #endregion
     }

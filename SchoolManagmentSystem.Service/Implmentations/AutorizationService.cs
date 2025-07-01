@@ -10,14 +10,16 @@ namespace SchoolManagmentSystem.Service.Implmentations
     {
         #region Feilds
         private readonly RoleManager<ApplicationRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         #endregion
 
 
         #region Ctor
 
-        public AutorizationService(RoleManager<ApplicationRole> roleManager)
+        public AutorizationService(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
         #endregion
 
@@ -84,6 +86,47 @@ namespace SchoolManagmentSystem.Service.Implmentations
             return $"Failed to update role: {errors}";
 
         }
-        #endregion
+
+        public async Task<string> DeleteRoleAsync(int id)
+        {
+
+            var canDeleted = await RoleCanBeDeleted(id);
+            if (!canDeleted)
+            {
+                return "Role cannot be deleted because it has users assigned to it.";
+            }
+            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == id);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"Role with ID {id} not found.");
+            }
+            // Delete the role
+            var result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded)
+            {
+                return "Role deleted successfully.";
+            }
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            return $"Failed to delete role: {errors}";
+        }
+
+        public async Task<bool> RoleCanBeDeleted(int roleId)
+        {
+
+            if (roleId <= 0)
+            {
+                throw new ArgumentException("Invalid role ID.", nameof(roleId));
+            }
+            // Check if the role exists
+            var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
+            if (role == null)
+            {
+                throw new KeyNotFoundException($"Role with ID {roleId} not found.");
+            }
+            // Check if the role has any users assigned to it
+            var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name);
+            return !usersInRole.Any();
+        }
     }
+    #endregion
 }
