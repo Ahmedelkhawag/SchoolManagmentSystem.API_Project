@@ -8,10 +8,11 @@ namespace SchoolManagmentSystem.API.Controllers
 {
     //[Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AuthorizationController : AppControllerBase
 
     {
-        [Authorize(Roles = "Admin")]
+
         [HttpPost(RouterParams.AuthorizationRouting.CreateRole)]
         public async Task<IActionResult> CreateRole([FromForm] AddRoleCommand command)
         {
@@ -23,5 +24,19 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return CustomResult(response);
         }
+
+        [HttpPut(RouterParams.AuthorizationRouting.EditRole)]
+        public async Task<IActionResult> EditRole([FromForm] EditRoleCommand command)
+        {
+
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message });
+            }
+            return CustomResult(response);
+        }
+
+
     }
 }
