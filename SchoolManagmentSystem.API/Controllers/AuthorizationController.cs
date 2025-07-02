@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.Authorization.Commands.Models;
+using SchoolManagmentSystem.Core.Features.Authorization.Queries.Models;
 using SchoolManagmentSystem.Data.AppMetaData;
 
 namespace SchoolManagmentSystem.API.Controllers
@@ -22,6 +23,7 @@ namespace SchoolManagmentSystem.API.Controllers
             {
                 return Ok(new { statuscode = response.statusCode, message = response.Message });
             }
+
             return CustomResult(response);
         }
 
@@ -34,8 +36,10 @@ namespace SchoolManagmentSystem.API.Controllers
             {
                 return Ok(new { statuscode = response.statusCode, message = response.Message });
             }
+
             return CustomResult(response);
         }
+
         [HttpDelete(RouterParams.AuthorizationRouting.DeleteRole)]
         public async Task<IActionResult> DeleteRole([FromRoute] int id)
         {
@@ -45,11 +49,32 @@ namespace SchoolManagmentSystem.API.Controllers
             {
                 return Ok(new { statuscode = response.statusCode, message = response.Message });
             }
+
             return CustomResult(response);
         }
 
+        [HttpGet(RouterParams.AuthorizationRouting.GetRoles)]
+        public async Task<IActionResult> GetRoles()
+        {
+            var response = await Mediator.Send(new GetRulesListQuery());
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, data = response.Data });
+            }
 
+            return CustomResult(response);
+        }
 
+        [HttpGet(RouterParams.AuthorizationRouting.GetRoleById)]
+        public async Task<IActionResult> GetRoleById([FromRoute] int id)
+        {
+            var response = await Mediator.Send(new GetRoleByIdQuery(id));
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, data = response.Data });
+            }
 
+            return CustomResult(response);
+        }
     }
 }

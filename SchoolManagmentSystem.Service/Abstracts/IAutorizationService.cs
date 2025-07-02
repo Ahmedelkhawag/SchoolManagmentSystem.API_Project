@@ -1,4 +1,5 @@
 ﻿using SchoolManagmentSystem.Data.DTOs;
+using SchoolManagmentSystem.Data.Entities.Identity;
 
 namespace SchoolManagmentSystem.Service.Abstracts
 {
@@ -9,5 +10,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<string> EditRoleAsync(EditRoleRequest editRoleRequest);
         Task<string> DeleteRoleAsync(int id);
         Task<bool> RoleCanBeDeleted(int roleId);
+        Task<List<ApplicationRole>> GetRolesAsync();
+        Task<ApplicationRole> GetRoleByIdAsync(int roleId);
     }
 }

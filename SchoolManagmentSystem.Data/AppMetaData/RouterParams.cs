@@ -64,8 +64,8 @@
             public const string CreateRole = $"{Prefix}/Role/Create";
             public const string EditRole = $"{Prefix}/Role/Edit";
             public const string DeleteRole = $"{Prefix}/Role/Delete" + SingleIdRoute;
-
-
+            public const string GetRoles = $"{Prefix}/Role/GetRoles";
+            public const string GetRoleById = $"{Prefix}/Role/GetRoleById" + SingleIdRoute;
         }
     }
 }

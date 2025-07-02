@@ -127,6 +127,21 @@ namespace SchoolManagmentSystem.Service.Implmentations
             var usersInRole = await _userManager.GetUsersInRoleAsync(role.Name);
             return !usersInRole.Any();
         }
+
+        public async Task<List<ApplicationRole>> GetRolesAsync()
+        {
+
+            return await _roleManager.Roles.ToListAsync();
+        }
+
+        public async Task<ApplicationRole> GetRoleByIdAsync(int roleId)
+        {
+            if (roleId <= 0)
+            {
+                throw new ArgumentException("Invalid role ID.", nameof(roleId));
+            }
+            return await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
+        }
     }
     #endregion
 }
