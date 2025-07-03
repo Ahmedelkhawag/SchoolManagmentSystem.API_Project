@@ -5,12 +5,14 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.Authorization.Queries.Models;
 using SchoolManagmentSystem.Core.Features.Authorization.Queries.Result;
 using SchoolManagmentSystem.Core.SharedResourses;
+using SchoolManagmentSystem.Data.DTOs;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Handlers
 {
     public class RoleQueryHandler : ResponseHandler, IRequestHandler<GetRulesListQuery, GeneralResponse<List<GetRulesListResult>>>,
-        IRequestHandler<GetRoleByIdQuery, GeneralResponse<GetRoleByIdResult>>
+        IRequestHandler<GetRoleByIdQuery, GeneralResponse<GetRoleByIdResult>>,
+        IRequestHandler<ManageUserRolesQuery, GeneralResponse<ManageUserRolesResult>>
     {
 
 
@@ -59,6 +61,15 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Handlers
             }
             var mappedRole = _mapper.Map<GetRoleByIdResult>(role);
             return Success(mappedRole);
+        }
+
+        public async Task<GeneralResponse<ManageUserRolesResult>> Handle(ManageUserRolesQuery request, CancellationToken cancellationToken)
+        {
+
+            var userRolesResult = await _authorizationService.GetUserRolesAsync(request.UserId);
+
+            return Success(userRolesResult);
+
         }
 
         #endregion

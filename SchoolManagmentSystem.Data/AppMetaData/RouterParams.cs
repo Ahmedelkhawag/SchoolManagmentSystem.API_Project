@@ -66,6 +66,7 @@
             public const string DeleteRole = $"{Prefix}/Role/Delete" + SingleIdRoute;
             public const string GetRoles = $"{Prefix}/Role/GetRoles";
             public const string GetRoleById = $"{Prefix}/Role/GetRoleById" + SingleIdRoute;
+            public const string GetUserRoles = $"{Prefix}/Role/GetUserRoles" + SingleIdRoute;
         }
     }
 }

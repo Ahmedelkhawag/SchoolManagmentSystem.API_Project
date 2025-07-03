@@ -76,5 +76,16 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
+        [HttpGet(RouterParams.AuthorizationRouting.GetUserRoles)]
+        public async Task<IActionResult> GetUserRoles([FromRoute] int id)
+        {
+            var response = await Mediator.Send(new ManageUserRolesQuery(id));
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, data = response.Data });
+            }
+
+            return CustomResult(response);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<bool> RoleCanBeDeleted(int roleId);
         Task<List<ApplicationRole>> GetRolesAsync();
         Task<ApplicationRole> GetRoleByIdAsync(int roleId);
+        Task<ManageUserRolesResult> GetUserRolesAsync(int userId);
     }
 }

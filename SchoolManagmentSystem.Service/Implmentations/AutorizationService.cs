@@ -142,6 +142,35 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
             return await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id == roleId);
         }
+
+        public async Task<ManageUserRolesResult> GetUserRolesAsync(int userId)
+        {
+            // Validate userId
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
+            }
+            var allRoles = await _roleManager.Roles.ToListAsync();
+
+            // Get the roles for the user
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Map the roles to UserRoles DTO
+            var userRoles = allRoles?.Select(role => new UserRoles
+            {
+                RoleId = role.Id,
+                RoleName = role.Name,
+                IsSelected = roles.Contains(role.Name)
+            }).ToList() ?? new List<UserRoles>();
+
+            return new ManageUserRolesResult
+            {
+                userId = user.Id,
+                userRoles = userRoles
+            };
+        }
+        #endregion
     }
-    #endregion
 }
+
