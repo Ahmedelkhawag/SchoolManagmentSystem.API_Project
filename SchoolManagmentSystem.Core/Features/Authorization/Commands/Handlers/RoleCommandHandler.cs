@@ -9,17 +9,18 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Handlers
 {
     public class RoleCommandHandler : ResponseHandler, IRequestHandler<AddRoleCommand, GeneralResponse<string>>,
         IRequestHandler<EditRoleCommand, GeneralResponse<string>>,
-        IRequestHandler<DeleteRoleCommand, GeneralResponse<string>>
+        IRequestHandler<DeleteRoleCommand, GeneralResponse<string>>,
+        IRequestHandler<UpdateUserRolesCommand, GeneralResponse<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResourse> _stringLocalizer;
         // private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IAutorizationService _authorizationService;
+        private readonly IAuthorizationServices _authorizationService;
 
         #endregion
         #region Ctor
         public RoleCommandHandler(IStringLocalizer<SharedResourse> stringLocalizer,
-            IAutorizationService authorizationService
+            IAuthorizationServices authorizationService
             ) : base(stringLocalizer)
         {
 
@@ -62,6 +63,23 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Handlers
             return result.Contains("successfully")
                 ? Success(result, _stringLocalizer["Role Deleted Successfully"])
                 : BadRequest<string>(_stringLocalizer["RoleDeletionFailed"]);
+        }
+
+        public async Task<GeneralResponse<string>> Handle(UpdateUserRolesCommand request, CancellationToken cancellationToken)
+        {
+
+            var result = await _authorizationService.UpdateUserRolesAsync(request);
+
+            if (result == null)
+            {
+                return NotFound<string>(_stringLocalizer["UserNotFound"]);
+            }
+
+            return result.Contains("successfully")
+                ? Success(result, _stringLocalizer["UserRolesUpdatedSuccessfully"])
+                : BadRequest<string>(_stringLocalizer["UserRolesUpdateFailed"]);
+
+
         }
         #endregion
     }

@@ -5,7 +5,7 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.Authorization.Queries.Models;
 using SchoolManagmentSystem.Core.Features.Authorization.Queries.Result;
 using SchoolManagmentSystem.Core.SharedResourses;
-using SchoolManagmentSystem.Data.DTOs;
+using SchoolManagmentSystem.Data.Results;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Handlers
@@ -20,14 +20,14 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Handlers
 
 
         private readonly IStringLocalizer<SharedResourse> _stringLocalizer;
-        private readonly IAutorizationService _authorizationService;
+        private readonly IAuthorizationServices _authorizationService;
         private readonly IMapper _mapper;
 
         #endregion
 
         #region Ctor
         public RoleQueryHandler(IStringLocalizer<SharedResourse> stringLocalizer,
-            IAutorizationService authorizationService, IMapper mapper) : base(stringLocalizer)
+            IAuthorizationServices authorizationService, IMapper mapper) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _authorizationService = authorizationService;
@@ -65,9 +65,9 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Handlers
 
         public async Task<GeneralResponse<ManageUserRolesResult>> Handle(ManageUserRolesQuery request, CancellationToken cancellationToken)
         {
-
+            // get user roles by user id
             var userRolesResult = await _authorizationService.GetUserRolesAsync(request.UserId);
-
+            //return success response if user roles found
             return Success(userRolesResult);
 
         }

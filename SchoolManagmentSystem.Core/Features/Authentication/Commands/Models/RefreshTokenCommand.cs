@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using SchoolManagmentSystem.Core.Bases;
-using SchoolManagmentSystem.Data.Helpers;
+using SchoolManagmentSystem.Data.Results;
 
 namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Models
 {

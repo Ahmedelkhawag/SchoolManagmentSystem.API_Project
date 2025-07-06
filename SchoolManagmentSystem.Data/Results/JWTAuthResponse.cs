@@ -1,4 +1,4 @@
-﻿namespace SchoolManagmentSystem.Data.Helpers
+﻿namespace SchoolManagmentSystem.Data.Results
 {
     public class JWTAuthResponse
     {

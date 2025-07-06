@@ -61,12 +61,22 @@
         public static class AuthorizationRouting
         {
             public const string Prefix = $"{Rule}/Authorization";
-            public const string CreateRole = $"{Prefix}/Role/Create";
-            public const string EditRole = $"{Prefix}/Role/Edit";
-            public const string DeleteRole = $"{Prefix}/Role/Delete" + SingleIdRoute;
-            public const string GetRoles = $"{Prefix}/Role/GetRoles";
-            public const string GetRoleById = $"{Prefix}/Role/GetRoleById" + SingleIdRoute;
-            public const string GetUserRoles = $"{Prefix}/Role/GetUserRoles" + SingleIdRoute;
+            public const string Roles = $"{Prefix}/Role";
+            public const string Claims = $"{Prefix}/Claim";
+            public const string CreateRole = $"{Roles}/Create";
+            public const string EditRole = $"{Roles}/Edit";
+            public const string DeleteRole = $"{Roles}/Delete" + SingleIdRoute;
+            public const string GetRoles = $"{Roles}/GetRoles";
+            public const string GetRoleById = $"{Roles}/GetRoleById" + SingleIdRoute;
+            public const string GetUserRoles = $"{Roles}/GetUserRoles" + SingleIdRoute;
+            public const string UpdateUserRoles = $"{Roles}/UpdateUserRoles";
+            public const string GetUserClaims = $"{Claims}/GetUserClaims" + SingleIdRoute;
+            //public const string DeleteClaim = $"{Claims}/Delete" + SingleIdRoute;
+            //public const string GetClaimById = $"{Claims}/GetClaimById" + SingleIdRoute;
+            //public const string CreateClaim = $"{Claims}/Create";
+            //public const string UpdateClaim = $"{Claims}/Update" + SingleIdRoute;
+            //public const string ListClaims = $"{Claims}/list";
+            //public const string PaginatedListClaims = $"{Claims}/paginatedList";
         }
     }
 }

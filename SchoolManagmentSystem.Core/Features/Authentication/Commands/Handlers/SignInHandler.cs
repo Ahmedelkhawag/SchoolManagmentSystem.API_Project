@@ -6,7 +6,7 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.Authentication.Commands.Models;
 using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities.Identity;
-using SchoolManagmentSystem.Data.Helpers;
+using SchoolManagmentSystem.Data.Results;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers

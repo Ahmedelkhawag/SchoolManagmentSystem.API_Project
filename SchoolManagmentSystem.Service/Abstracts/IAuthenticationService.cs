@@ -1,5 +1,5 @@
 ﻿using SchoolManagmentSystem.Data.Entities.Identity;
-using SchoolManagmentSystem.Data.Helpers;
+using SchoolManagmentSystem.Data.Results;
 using System.Security.Claims;
 
 namespace SchoolManagmentSystem.Service.Abstracts

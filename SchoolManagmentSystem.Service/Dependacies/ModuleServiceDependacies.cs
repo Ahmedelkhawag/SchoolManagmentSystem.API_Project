@@ -11,7 +11,7 @@ namespace SchoolManagmentSystem.Service.Dependacies
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IDepartmentService, DepartmentService>();
             services.AddTransient<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IAutorizationService, AutorizationService>();
+            services.AddTransient<IAuthorizationServices, AuthorizationServices>();
             return services;
         }
     }

@@ -10,12 +10,12 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Validators
     {
         #region Fields  
         private readonly IStringLocalizer<SharedResourse> _localizer;
-        private readonly IAutorizationService _authorizationService;
+        private readonly IAuthorizationServices _authorizationService;
 
         #endregion
 
         #region CTOR
-        public DeleteRoleCommandValidator(IStringLocalizer<SharedResourse> localizer, IAutorizationService authorizationService)
+        public DeleteRoleCommandValidator(IStringLocalizer<SharedResourse> localizer, IAuthorizationServices authorizationService)
         {
             _localizer = localizer;
             _authorizationService = authorizationService;

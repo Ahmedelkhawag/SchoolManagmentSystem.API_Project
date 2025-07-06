@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SchoolManagmentSystem.API.Base;
 using SchoolManagmentSystem.Core.Features.Authorization.Commands.Models;
 using SchoolManagmentSystem.Core.Features.Authorization.Queries.Models;
@@ -9,7 +8,7 @@ namespace SchoolManagmentSystem.API.Controllers
 {
     //[Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles = "Admin")]
+    // [Authorize(Roles = "Admin")]
     public class AuthorizationController : AppControllerBase
 
     {
@@ -85,6 +84,29 @@ namespace SchoolManagmentSystem.API.Controllers
                 return Ok(new { statuscode = response.statusCode, data = response.Data });
             }
 
+            return CustomResult(response);
+        }
+
+        [HttpPut(RouterParams.AuthorizationRouting.UpdateUserRoles)]
+        public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesCommand command)
+        {
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message });
+            }
+
+            return CustomResult(response);
+        }
+
+        [HttpGet(RouterParams.AuthorizationRouting.GetUserClaims)]
+        public async Task<IActionResult> GetUserClaims([FromRoute] int id)
+        {
+            var response = await Mediator.Send(new ManageUSerClaimsQuery(id));
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, data = response.Data });
+            }
             return CustomResult(response);
         }
     }

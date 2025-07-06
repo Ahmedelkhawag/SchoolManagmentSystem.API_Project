@@ -4,14 +4,13 @@ using SchoolManagmentSystem.Data.Results;
 
 namespace SchoolManagmentSystem.Core.Features.Authorization.Queries.Models
 {
-    public class ManageUserRolesQuery : IRequest<GeneralResponse<ManageUserRolesResult>>
+    public class ManageUSerClaimsQuery : IRequest<GeneralResponse<ManageUserClaimsResult>>
     {
-
-        public int UserId { get; set; }
-        public ManageUserRolesQuery(int id)
+        public int userId { get; set; }
+        public ManageUSerClaimsQuery(int id)
         {
 
-            UserId = id;
+            userId = id;
         }
     }
 }

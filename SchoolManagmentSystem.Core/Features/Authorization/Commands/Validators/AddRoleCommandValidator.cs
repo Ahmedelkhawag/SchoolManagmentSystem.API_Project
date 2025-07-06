@@ -10,12 +10,12 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Validators
     {
         #region Feilds
         private readonly IStringLocalizer<SharedResourse> _stringLocalizer;
-        private readonly IAutorizationService _authorizationService;
+        private readonly IAuthorizationServices _authorizationService;
         #endregion
 
         #region Ctor
         public AddRoleCommandValidator(IStringLocalizer<SharedResourse> stringLocalizer,
-            IAutorizationService autorizationService)
+            IAuthorizationServices autorizationService)
         {
             _stringLocalizer = stringLocalizer;
             _authorizationService = autorizationService;
@@ -29,7 +29,7 @@ namespace SchoolManagmentSystem.Core.Features.Authorization.Commands.Validators
         {
             RuleFor(x => x.RoleName)
                 .NotEmpty().WithMessage(_stringLocalizer[SharedResourseKeys.NotEmpty])
-                .MinimumLength(3).WithMessage(_stringLocalizer["RoleNameMinimumLength"])
+                .MinimumLength(2).WithMessage(_stringLocalizer["RoleNameMinimumLength"])
                 .MaximumLength(50).WithMessage(_stringLocalizer["RoleNameMaximumLength"]);
         }
 

@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using SchoolManagmentSystem.Data.DTOs;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Helpers;
+using SchoolManagmentSystem.Data.Results;
 using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Service.Implmentations
 {
-    public class AutorizationService : IAutorizationService
+    public class AuthorizationServices : IAuthorizationServices
     {
         #region Feilds
         private readonly RoleManager<ApplicationRole> _roleManager;
@@ -16,7 +18,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
 
         #region Ctor
 
-        public AutorizationService(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AuthorizationServices(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
         {
             _roleManager = roleManager;
             _userManager = userManager;
@@ -163,14 +165,92 @@ namespace SchoolManagmentSystem.Service.Implmentations
                 RoleName = role.Name,
                 IsSelected = roles.Contains(role.Name)
             }).ToList() ?? new List<UserRoles>();
-
+            // Return the result
             return new ManageUserRolesResult
             {
                 userId = user.Id,
                 userRoles = userRoles
             };
         }
+
+        public async Task<string> UpdateUserRolesAsync(UpdateUserRolesRequest request)
+        {
+            // Validate request
+            var user = await _userManager.FindByIdAsync(request.userId.ToString());
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with ID {request.userId} not found.");
+            }
+            // Get the current roles of the user
+            var currentUserRoles = await _userManager.GetRolesAsync(user);
+
+            // Get the roles to be added
+            var selectedRoles = request.userRoles
+                .Where(r => r.IsSelected == true)
+                .Select(r => r.RoleName)
+                .ToList();
+
+            //var AddedRoles = selectedRoles.Except(currentUserRoles).ToList();
+            var rolesToRemove = currentUserRoles.Except(selectedRoles).ToList();
+
+
+            // Add new roles to the user
+            if (selectedRoles.Any())
+            {
+                var addResult = await _userManager.AddToRolesAsync(user, selectedRoles);
+                if (!addResult.Succeeded)
+                {
+                    var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                    return $"Failed to add roles: {errors}";
+                }
+            }
+
+            // Remove roles from the user
+
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userManager.RemoveFromRolesAsync(user, rolesToRemove);
+                if (!removeResult.Succeeded)
+                {
+                    var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                    return $"Failed to remove roles: {errors}";
+                }
+            }
+            return $"User roles updated successfully for user ID: {request.userId}";
+        }
+
+        public async Task<ManageUserClaimsResult> ManageUserClaimsAsync(int userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null)
+            {
+                throw new KeyNotFoundException($"User with ID {userId} not found.");
+            }
+
+
+            var existingUserCliams = await _userManager.GetClaimsAsync(user);
+
+            var model = new ManageUserClaimsResult
+            {
+                userId = userId,
+                userClaims = new List<UserClaim>()
+            };
+
+            foreach (var claim in ClaimsStore.Claims)
+            {
+                var userClaim = new UserClaim
+                {
+                    ClaimType = claim.Type,
+                    ClaimValue = claim.Value,
+                    IsSelected = existingUserCliams.Any(c => c.Type == claim.Type && c.Value == claim.Value)
+                };
+                model.userClaims.Add(userClaim);
+            }
+            return model;
+
+        }
         #endregion
     }
 }
+
 

@@ -1,4 +1,4 @@
-﻿namespace SchoolManagmentSystem.Data.DTOs
+﻿namespace SchoolManagmentSystem.Data.Results
 {
     public class ManageUserRolesResult
     {

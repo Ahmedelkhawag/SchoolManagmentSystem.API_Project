@@ -1,9 +1,10 @@
 ﻿using SchoolManagmentSystem.Data.DTOs;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Results;
 
 namespace SchoolManagmentSystem.Service.Abstracts
 {
-    public interface IAutorizationService
+    public interface IAuthorizationServices
     {
         Task<string> AddRoleAsync(string roleName);
         Task<bool> IsRoleExist(string roleName);
@@ -13,5 +14,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<List<ApplicationRole>> GetRolesAsync();
         Task<ApplicationRole> GetRoleByIdAsync(int roleId);
         Task<ManageUserRolesResult> GetUserRolesAsync(int userId);
+        Task<string> UpdateUserRolesAsync(UpdateUserRolesRequest request);
+        Task<ManageUserClaimsResult> ManageUserClaimsAsync(int userId);
     }
 }
