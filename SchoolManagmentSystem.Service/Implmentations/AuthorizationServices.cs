@@ -3,8 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagmentSystem.Data.DTOs;
 using SchoolManagmentSystem.Data.Entities.Identity;
 using SchoolManagmentSystem.Data.Helpers;
+using SchoolManagmentSystem.Data.Requests;
 using SchoolManagmentSystem.Data.Results;
+using SchoolManagmentSystem.Infrastructure.Data;
 using SchoolManagmentSystem.Service.Abstracts;
+using System.Security.Claims;
 
 namespace SchoolManagmentSystem.Service.Implmentations
 {
@@ -13,15 +16,17 @@ namespace SchoolManagmentSystem.Service.Implmentations
         #region Feilds
         private readonly RoleManager<ApplicationRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
         #endregion
 
 
         #region Ctor
 
-        public AuthorizationServices(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AuthorizationServices(RoleManager<ApplicationRole> roleManager, UserManager<ApplicationUser> userManager, ApplicationDbContext context)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _context = context;
         }
         #endregion
 
@@ -247,6 +252,68 @@ namespace SchoolManagmentSystem.Service.Implmentations
                 model.userClaims.Add(userClaim);
             }
             return model;
+
+        }
+
+        public async Task<string> UpdateUserClaimsAsync(UpdateUserClaimsRequest request)
+        {
+            var transaction = await _context.Database.BeginTransactionAsync();
+            try
+            {
+                // Validate request
+                var user = await _userManager.FindByIdAsync(request.userId.ToString());
+                if (user == null)
+                {
+                    throw new KeyNotFoundException($"User with ID {request.userId} not found.");
+                }
+                // Get the current claims of the user
+                var currentUserClaims = await _userManager.GetClaimsAsync(user);
+                // Get the selected claims from the request
+                var selectedClaims = request.userClaims
+                    .Where(c => c.IsSelected == true)
+                    .Select(c => new Claim(c.ClaimType, c.ClaimValue))
+                    .ToList();
+                // Get the claims to be added
+                var claimsToBeAdded = selectedClaims
+                    .Where(sc => !currentUserClaims.Any(c => c.Type == sc.Type && c.Value == sc.Value))
+                    .ToList();
+                // Get the claims to be removed
+                var claimsToBeRemoved = currentUserClaims
+                    .Where(c => !selectedClaims.Any(sc => sc.Type == c.Type && sc.Value == c.Value))
+                    .ToList();
+
+                // Add new claims to the user
+                if (claimsToBeAdded.Any())
+                {
+                    var addResult = await _userManager.AddClaimsAsync(user, claimsToBeAdded);
+                    if (!addResult.Succeeded)
+                    {
+                        var errors = string.Join(", ", addResult.Errors.Select(e => e.Description));
+                        return $"Failed to add claims: {errors}";
+                    }
+                }
+
+                // Remove claims from the user
+                if (claimsToBeRemoved.Any())
+                {
+                    var removeResult = await _userManager.RemoveClaimsAsync(user, claimsToBeRemoved);
+                    if (!removeResult.Succeeded)
+                    {
+                        var errors = string.Join(", ", removeResult.Errors.Select(e => e.Description));
+                        return $"Failed to remove claims: {errors}";
+                    }
+                }
+                await transaction.CommitAsync();
+                return $"User claims updated successfully for user ID: {request.userId}";
+            }
+            catch (Exception ex)
+            {
+
+                await transaction.RollbackAsync();
+                return $"Failed to update claims: An error occurred while processing user ID: {request.userId}. Error details: {ex.Message}";
+            }
+
+
 
         }
         #endregion

@@ -71,6 +71,7 @@
             public const string GetUserRoles = $"{Roles}/GetUserRoles" + SingleIdRoute;
             public const string UpdateUserRoles = $"{Roles}/UpdateUserRoles";
             public const string GetUserClaims = $"{Claims}/GetUserClaims" + SingleIdRoute;
+            public const string UpdateUserClaims = $"{Claims}/UpdateUserClaims";
             //public const string DeleteClaim = $"{Claims}/Delete" + SingleIdRoute;
             //public const string GetClaimById = $"{Claims}/GetClaimById" + SingleIdRoute;
             //public const string CreateClaim = $"{Claims}/Create";

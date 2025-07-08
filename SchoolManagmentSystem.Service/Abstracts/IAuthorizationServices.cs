@@ -1,5 +1,6 @@
 ﻿using SchoolManagmentSystem.Data.DTOs;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Requests;
 using SchoolManagmentSystem.Data.Results;
 
 namespace SchoolManagmentSystem.Service.Abstracts
@@ -16,5 +17,6 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<ManageUserRolesResult> GetUserRolesAsync(int userId);
         Task<string> UpdateUserRolesAsync(UpdateUserRolesRequest request);
         Task<ManageUserClaimsResult> ManageUserClaimsAsync(int userId);
+        Task<string> UpdateUserClaimsAsync(UpdateUserClaimsRequest request);
     }
 }
