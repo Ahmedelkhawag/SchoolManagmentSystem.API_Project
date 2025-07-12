@@ -68,7 +68,7 @@ namespace SchoolManagmentSystem.API
 
             #endregion
             #region Service Layer Services
-            builder.Services.AddServiceDependacies();
+            builder.Services.AddServiceDependacies(builder.Configuration);
             #endregion
             #region Core Services
             builder.Services.AddCoreDependacies();

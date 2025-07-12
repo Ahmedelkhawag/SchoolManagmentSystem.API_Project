@@ -9,7 +9,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<JWTAuthResponse> GenerateJWTToken(ApplicationUser user);
         string GenerateRefreshToken();
         RefreshToken GetRefreshToken(ApplicationUser user);
-        List<Claim> GetUserClaims(ApplicationUser user, IList<string> roles);
+        Task<List<Claim>> GetUserClaims(ApplicationUser user/*, IList<string> roles*/);
         Task<JWTAuthResponse> CreateRefreshToken(string accessToken, string refreshToken);
         Task<string> ValidateToken(string accessToken);
 

@@ -15,8 +15,13 @@ namespace SchoolManagmentSystem.Data.Helpers
             new Claim(PermessionClaimType, "CanCreateUsers"),
             new Claim(PermessionClaimType, "CanViewRoles"),
             new Claim(PermessionClaimType, "CanEditRoles"),
+            new Claim(PermessionClaimType, "CanEditUserRoles"),
             new Claim(PermessionClaimType, "CanDeleteRoles"),
+            new Claim(PermessionClaimType, "CanDeleteUerRoles"),
             new Claim(PermessionClaimType, "CanCreateRoles"),
+            new Claim(PermessionClaimType, "CanViewUserClaims"),
+            new Claim(PermessionClaimType, "CanEditUserClaims"),
+
         };
 
     }

@@ -65,6 +65,26 @@ namespace SchoolManagmentSystem.Infrastructure.Dependacies
            });
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("CanViewUsers", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanViewUsers"));
+                options.AddPolicy("CanViewDashboard", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanViewDashboard"));
+                options.AddPolicy("CanEditDashboard", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanEditDashboard"));
+                options.AddPolicy("CanViewRoles", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanViewRoles"));
+                options.AddPolicy("CanEditRoles", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanEditRoles"));
+                options.AddPolicy("CanDeleteRoles", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanDeleteRoles"));
+                options.AddPolicy("CanCreateRoles", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanCreateRoles"));
+                options.AddPolicy("CanViewUsers", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanViewUsers"));
+                options.AddPolicy("CanEditUsers", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanEditUsers"));
+                options.AddPolicy("CanDeleteUsers", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanDeleteUsers"));
+                options.AddPolicy("CanCreateUsers", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanCreateUsers"));
+                options.AddPolicy("CanViewUserClaims", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanViewUserClaims"));
+                options.AddPolicy("CanEditUserClaims", policy => policy.RequireRole("Admin").RequireClaim("Permissions", "CanEditUserClaims"));
+
+
+
+            });
+
 
 
             return services;

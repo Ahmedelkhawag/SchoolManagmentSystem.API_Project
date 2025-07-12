@@ -79,5 +79,12 @@
             //public const string ListClaims = $"{Claims}/list";
             //public const string PaginatedListClaims = $"{Claims}/paginatedList";
         }
+        public static class EmailRouting
+        {
+            public const string Prefix = $"{Rule}/Email";
+            public const string SendEmail = $"{Prefix}/SendEmail";
+            public const string SendEmailWithAttachment = $"{Prefix}/SendEmailWithAttachment";
+            public const string SendEmailToMultipleRecipients = $"{Prefix}/SendEmailToMultipleRecipients";
+        }
     }
 }

@@ -68,7 +68,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
             var roles = await _userManager.GetRolesAsync(user);
             var Key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
             var creds = new SigningCredentials(Key, SecurityAlgorithms.HmacSha256Signature);
-            var claims = GetUserClaims(user, roles);
+            var claims = await GetUserClaims(user/*, roles*/);
 
             var Accesstoken = new JwtSecurityToken(
                 issuer: _jwtSettings.Issuer,
@@ -104,8 +104,10 @@ namespace SchoolManagmentSystem.Service.Implmentations
             return Convert.ToBase64String(rondomNumber);
         }
 
-        public List<Claim> GetUserClaims(ApplicationUser user, IList<string> roles)
+        public async Task<List<Claim>> GetUserClaims(ApplicationUser user/*, IList<string> roles*/)
         {
+            var roles = await _userManager.GetRolesAsync(user); // Fetch roles asynchronously
+
             var userclaims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
@@ -121,7 +123,11 @@ namespace SchoolManagmentSystem.Service.Implmentations
             {
                 userclaims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
             }
-
+            var userClaims = await _userManager.GetClaimsAsync(user); // Fetch user claims asynchronously
+            if (userClaims != null && userClaims.Count > 0)
+            {
+                userclaims.AddRange(userClaims);
+            }
             return userclaims;
         }
 

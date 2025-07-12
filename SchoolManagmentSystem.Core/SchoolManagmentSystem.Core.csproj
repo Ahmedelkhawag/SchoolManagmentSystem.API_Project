@@ -14,6 +14,8 @@
 
   <ItemGroup>
     <Folder Include="Features\Authentication\Queries\Results\" />
+    <Folder Include="Features\Emails\Queries\Handlers\" />
+    <Folder Include="Features\Emails\Queries\Models\" />
     <Folder Include="Features\students\Queries\Validators\" />
   </ItemGroup>
 

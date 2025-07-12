@@ -13,6 +13,7 @@ namespace SchoolManagmentSystem.API.Controllers
     public class AuthorizationController : AppControllerBase
 
     {
+        [Authorize(Policy = "CanCreateRoles")]
 
         [HttpPost(RouterParams.AuthorizationRouting.CreateRole)]
         public async Task<IActionResult> CreateRole([FromForm] AddRoleCommand command)
@@ -27,6 +28,7 @@ namespace SchoolManagmentSystem.API.Controllers
             return CustomResult(response);
         }
 
+        [Authorize(Policy = "CanEditRoles")]
         [HttpPut(RouterParams.AuthorizationRouting.EditRole)]
         public async Task<IActionResult> EditRole([FromForm] EditRoleCommand command)
         {
@@ -39,7 +41,7 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
-
+        [Authorize(Policy = "CanDeleteRoles")]
         [HttpDelete(RouterParams.AuthorizationRouting.DeleteRole)]
         public async Task<IActionResult> DeleteRole([FromRoute] int id)
         {
@@ -52,7 +54,7 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
-
+        [Authorize(Policy = "CanViewRoles")]
         [HttpGet(RouterParams.AuthorizationRouting.GetRoles)]
         public async Task<IActionResult> GetRoles()
         {
@@ -64,7 +66,7 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
-
+        [Authorize(Policy = "CanViewRoles")]
         [HttpGet(RouterParams.AuthorizationRouting.GetRoleById)]
         public async Task<IActionResult> GetRoleById([FromRoute] int id)
         {
@@ -76,6 +78,7 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
+        [Authorize(Policy = "CanViewRoles")]
         [HttpGet(RouterParams.AuthorizationRouting.GetUserRoles)]
         public async Task<IActionResult> GetUserRoles([FromRoute] int id)
         {
@@ -89,6 +92,7 @@ namespace SchoolManagmentSystem.API.Controllers
         }
 
         [HttpPut(RouterParams.AuthorizationRouting.UpdateUserRoles)]
+        [Authorize(Policy = "CanEditUserRoles")]
         public async Task<IActionResult> UpdateUserRoles([FromBody] UpdateUserRolesCommand command)
         {
             var response = await Mediator.Send(command);
@@ -99,7 +103,7 @@ namespace SchoolManagmentSystem.API.Controllers
 
             return CustomResult(response);
         }
-
+        [Authorize(Policy = "CanViewUserClaims")]
         [HttpGet(RouterParams.AuthorizationRouting.GetUserClaims)]
         public async Task<IActionResult> GetUserClaims([FromRoute] int id)
         {
@@ -110,6 +114,7 @@ namespace SchoolManagmentSystem.API.Controllers
             }
             return CustomResult(response);
         }
+        [Authorize(Policy = "CanEditUserClaims")]
         [HttpPut(RouterParams.AuthorizationRouting.UpdateUserClaims)]
         public async Task<IActionResult> UpdateUserClaims([FromBody] UpdateUserClaimsCommand command)
         {
