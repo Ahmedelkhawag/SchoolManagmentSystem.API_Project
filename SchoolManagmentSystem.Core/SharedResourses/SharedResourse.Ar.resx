@@ -186,4 +186,13 @@
   <data name="PasswordOrUserNameIsWrong" xml:space="preserve">
     <value>كلمة السر أو اسم المسخدم غير صحيحة</value>
   </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value> من فضلك قم بتأكيد الايميل </value>
+  </data>
+  <data name="UserNameIsAlreadyExists" xml:space="preserve">
+    <value>المستخدم موجود بافعل</value>
+  </data>
+  <data name="EmailIsAlreadyExists" xml:space="preserve">
+    <value>الاميل موجود بالفعل</value>
+  </data>
 </root>

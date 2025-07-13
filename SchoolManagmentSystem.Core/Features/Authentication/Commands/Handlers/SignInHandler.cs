@@ -47,6 +47,12 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
             }
             //try to sign in
             var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+            //confirm Email 
+            if (!user.EmailConfirmed)
+            {
+                return UnprocessableEntity<JWTAuthResponse>(_localizer[SharedResourseKeys.EmailNotConfirmed]);
+            }
+
             // if faild ? return password or userName is wrong try again
             if (!result.Succeeded)
             {

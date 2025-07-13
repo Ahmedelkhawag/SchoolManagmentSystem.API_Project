@@ -25,5 +25,8 @@
         public const string UserNameIsNotExist = "UserNameIsNotExist";
         public const string PasswordOrUserNameIsWrong = "PasswordOrUserNameIsWrong";
         public const string InvalidEmail = "EmailIsNotValid";
+        public const string EmailNotConfirmed = "EmailNotConfirmed";
+        public const string UserNameIsAlreadyExists = "UserNameIsAlreadyExists";
+        public const string EmailIsAlreadyExists = "EmailIsAlreadyExists";
     }
 }

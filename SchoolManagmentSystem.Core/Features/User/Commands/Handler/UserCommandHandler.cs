@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
@@ -7,6 +8,7 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.User.Commands.Models;
 using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Service.Abstracts;
 
 namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 {
@@ -19,51 +21,80 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
         private readonly IStringLocalizer<SharedResourse> _localizer;
         private readonly IMapper _mapper;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IEmailService _emailService;
+        private readonly IUserService _userService;
         #endregion
 
         #region Ctor
         public UserCommandHandler(IStringLocalizer<SharedResourse> localizer,
             IMapper mapper,
-            UserManager<ApplicationUser> userManager) : base(localizer)
+            UserManager<ApplicationUser> userManager,
+            IHttpContextAccessor httpContextAccessor,
+            IEmailService emailService,
+            IUserService userService) : base(localizer)
         {
             _localizer = localizer;
             _mapper = mapper;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
+            _emailService = emailService;
+            _userService = userService;
         }
         #endregion
 
         #region Handlers
         public async Task<GeneralResponse<string>> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            //IS Email Exist
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user != null)
-            {
-                return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
-            }
-            //IS UserName Exist
-            user = await _userManager.FindByNameAsync(request.UserName);
-            if (user != null)
-            {
-                return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
-            }
+            #region code before refactoring
+            ////IS Email Exist
+            //var user = await _userManager.FindByEmailAsync(request.Email);
+            //if (user != null)
+            //{
+            //    return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
+            //}
+            ////IS UserName Exist
+            //user = await _userManager.FindByNameAsync(request.UserName);
+            //if (user != null)
+            //{
+            //    return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
+            //}
             //Map User
-            var newUser = _mapper.Map<ApplicationUser>(request);
-
-            //Create User
-            var result = await _userManager.CreateAsync(newUser, request.Password);
-
             //Assign Role to User
-            await _userManager.AddToRoleAsync(newUser, "user");
-
-
-            if (result.Succeeded)
+            //await _userManager.AddToRoleAsync(newUser, "user");
+            //// send confirmation email
+            //var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+            //var confirmationLink = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/v1/Authentication/ConfirmEmail?userId={newUser.Id}&code={confirmationCode}";
+            ////message body
+            //var messageBody = $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>";
+            //// Send Email
+            //var sendEmailResult = await _emailService.SendEmailAsync(newUser.Email, "Elkhawaga", messageBody, "Confirm Email");
+            #endregion
+            var userByEmail = await _userManager.FindByEmailAsync(request.Email);
+            if (userByEmail != null)
             {
-                return Success<string>("User Added Successfully");
+                // بنرجع رد واضح إن الإيميل موجود
+                return BadRequest<string>(_localizer[SharedResourseKeys.EmailIsAlreadyExists]);
             }
-            else
+
+            var userByName = await _userManager.FindByNameAsync(request.UserName);
+            if (userByName != null)
             {
-                return UnprocessableEntity<string>(string.Join(",", result.Errors.Select(x => x.Description)));
+                // بنرجع رد واضح إن اسم المستخدم موجود
+                return BadRequest<string>(_localizer[SharedResourseKeys.UserNameIsAlreadyExists]);
+            }
+            try
+            {
+                var newUser = _mapper.Map<ApplicationUser>(request);
+
+                //Create User
+                var result = await _userService.RegisterUserAync(newUser, request.Password);
+                return Success<string>(result);
+            }
+            catch (Exception ex)
+            {
+
+                return UnprocessableEntity<string>(ex.Message);
             }
 
 

@@ -186,4 +186,13 @@
   <data name="PasswordOrUserNameIsWrong" xml:space="preserve">
     <value>Password Or UserName Is Wrong</value>
   </data>
+  <data name="EmailNotConfirmed" xml:space="preserve">
+    <value>Email Not Confirmed</value>
+  </data>
+  <data name="UserNameIsAlreadyExists" xml:space="preserve">
+    <value>UserName Is Already Exists</value>
+  </data>
+  <data name="EmailIsAlreadyExists" xml:space="preserve">
+    <value>Email Is Already Exists</value>
+  </data>
 </root>
