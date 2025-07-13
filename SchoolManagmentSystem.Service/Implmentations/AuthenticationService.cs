@@ -267,6 +267,18 @@ namespace SchoolManagmentSystem.Service.Implmentations
                 return $"Token validation failed: {ex.Message}";
             }
         }
+
+        public async Task<string> ConfirmEmailAsync(int userId, string code)
+        {
+
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.", nameof(userId));
+            }
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return result.Succeeded ? "Email confirmed successfully." : "Email confirmation failed.";
+        }
         #endregion
     }
 }

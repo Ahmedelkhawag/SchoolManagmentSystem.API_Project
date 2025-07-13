@@ -12,6 +12,7 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<List<Claim>> GetUserClaims(ApplicationUser user/*, IList<string> roles*/);
         Task<JWTAuthResponse> CreateRefreshToken(string accessToken, string refreshToken);
         Task<string> ValidateToken(string accessToken);
+        Task<string> ConfirmEmailAsync(int userId, string code);
 
     }
 }

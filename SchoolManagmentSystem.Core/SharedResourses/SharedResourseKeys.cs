@@ -28,5 +28,8 @@
         public const string EmailNotConfirmed = "EmailNotConfirmed";
         public const string UserNameIsAlreadyExists = "UserNameIsAlreadyExists";
         public const string EmailIsAlreadyExists = "EmailIsAlreadyExists";
+        public const string EmailConfirmationFailed = "EmailConfirmationFailed";
+        public const string EmailConfirmationSuccess = "EmailConfirmationSuccess";
+
     }
 }

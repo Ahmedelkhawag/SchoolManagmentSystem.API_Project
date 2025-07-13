@@ -195,4 +195,10 @@
   <data name="EmailIsAlreadyExists" xml:space="preserve">
     <value>الاميل موجود بالفعل</value>
   </data>
+  <data name="EmailConfirmationFailed" xml:space="preserve">
+    <value>فشل في تأكيد الأيميل</value>
+  </data>
+  <data name="EmailConfirmationSuccess" xml:space="preserve">
+    <value>تم تأكيد الايميل بنجاح</value>
+  </data>
 </root>

@@ -41,56 +41,34 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
             _emailService = emailService;
             _userService = userService;
         }
-        #endregion
-
-        #region Handlers
         public async Task<GeneralResponse<string>> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
-            #region code before refactoring
-            ////IS Email Exist
-            //var user = await _userManager.FindByEmailAsync(request.Email);
-            //if (user != null)
-            //{
-            //    return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
-            //}
-            ////IS UserName Exist
-            //user = await _userManager.FindByNameAsync(request.UserName);
-            //if (user != null)
-            //{
-            //    return BadRequest<string>(_localizer[SharedResourseKeys.AlreadyExists]);
-            //}
-            //Map User
-            //Assign Role to User
-            //await _userManager.AddToRoleAsync(newUser, "user");
-            //// send confirmation email
-            //var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
-            //var confirmationLink = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/v1/Authentication/ConfirmEmail?userId={newUser.Id}&code={confirmationCode}";
-            ////message body
-            //var messageBody = $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>";
-            //// Send Email
-            //var sendEmailResult = await _emailService.SendEmailAsync(newUser.Email, "Elkhawaga", messageBody, "Confirm Email");
-            #endregion
+            // Check if the email already exists in the system
             var userByEmail = await _userManager.FindByEmailAsync(request.Email);
             if (userByEmail != null)
             {
-                // بنرجع رد واضح إن الإيميل موجود
+                // Return a clear response indicating the email is already in use
                 return BadRequest<string>(_localizer[SharedResourseKeys.EmailIsAlreadyExists]);
             }
 
+            // Check if the username already exists in the system
             var userByName = await _userManager.FindByNameAsync(request.UserName);
             if (userByName != null)
             {
-                // بنرجع رد واضح إن اسم المستخدم موجود
+                // Return a clear response indicating the username is already in use
                 return BadRequest<string>(_localizer[SharedResourseKeys.UserNameIsAlreadyExists]);
             }
             try
             {
+                //Map User
                 var newUser = _mapper.Map<ApplicationUser>(request);
 
                 //Create User
                 var result = await _userService.RegisterUserAync(newUser, request.Password);
+                //Check if the creation was successful
                 return Success<string>(result);
             }
+            // If an error occurs during user creation
             catch (Exception ex)
             {
 
@@ -102,7 +80,7 @@ namespace SchoolManagmentSystem.Core.Features.User.Commands.Handler
 
         public async Task<GeneralResponse<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
-            //check if user is exist
+            // Check if user exists
             var Existinguser = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
             if (Existinguser != null)
             {

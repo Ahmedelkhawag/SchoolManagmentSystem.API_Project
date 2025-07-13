@@ -195,4 +195,10 @@
   <data name="EmailIsAlreadyExists" xml:space="preserve">
     <value>Email Is Already Exists</value>
   </data>
+  <data name="EmailConfirmationFailed" xml:space="preserve">
+    <value>Email Confirmation Failed</value>
+  </data>
+  <data name="EmailConfirmationSuccess" xml:space="preserve">
+    <value>Email Confirmation Success</value>
+  </data>
 </root>

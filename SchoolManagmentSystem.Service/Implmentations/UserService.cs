@@ -70,7 +70,7 @@ namespace SchoolManagmentSystem.Service.Implmentations
             try
             {
                 var confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                var confirmationLink = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/api/Authentication/ConfirmEmail?userId={user.Id}&code={Uri.EscapeDataString(confirmationCode)}";
+                var confirmationLink = $"{_httpContextAccessor.HttpContext.Request.Scheme}://{_httpContextAccessor.HttpContext.Request.Host}/Api/V1/Authentication/ConfirmEmail?userId={user.Id}&code={Uri.EscapeDataString(confirmationCode)}";
                 var emailContent = $"Please confirm your email by clicking this link: <a href='{confirmationLink}'>Confirm Email</a>";
 
                 await _emailService.SendEmailAsync(user.Email, "Elkhawaga", emailContent, "Confirm your email");
