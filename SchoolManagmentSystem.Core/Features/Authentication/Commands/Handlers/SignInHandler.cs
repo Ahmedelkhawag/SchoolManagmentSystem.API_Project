@@ -6,6 +6,7 @@ using SchoolManagmentSystem.Core.Bases;
 using SchoolManagmentSystem.Core.Features.Authentication.Commands.Models;
 using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Helpers;
 using SchoolManagmentSystem.Data.Results;
 using SchoolManagmentSystem.Service.Abstracts;
 
@@ -13,7 +14,8 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
 {
     public class SignInHandler : ResponseHandler,
         IRequestHandler<SignInCommand, GeneralResponse<JWTAuthResponse>>,
-        IRequestHandler<RefreshTokenCommand, GeneralResponse<JWTAuthResponse>>
+        IRequestHandler<RefreshTokenCommand, GeneralResponse<JWTAuthResponse>>,
+        IRequestHandler<ResetPasswordCommand, GeneralResponse<string>>
     {
         #region Feilds
 
@@ -73,6 +75,29 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Commands.Handlers
         {
             var result = await _authenticationService.CreateRefreshToken(request.AccessToken, request.RefreshToken);
             return Success(result, null, _localizer[SharedResourseKeys.Succeeded]);
+        }
+
+        public async Task<GeneralResponse<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
+        {
+
+            var resetPasswordParams = new ResetPasswordParams
+            {
+                Email = request.Email,
+                Token = request.Token,
+                NewPassword = request.NewPassword
+            };
+            try
+            {
+                var resultMessage = await _authenticationService.ResetPasswordAsync(resetPasswordParams);
+                return Success<string>(resultMessage);
+            }
+            catch (Exception ex)
+            {
+
+                return BadRequest<string>(ex.Message);
+            }
+
+
         }
         #endregion
     }

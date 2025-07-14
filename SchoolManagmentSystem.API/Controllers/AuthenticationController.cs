@@ -65,5 +65,31 @@ namespace SchoolManagmentSystem.API.Controllers
                 return CustomResult(response);
             }
         }
+        [HttpPost(RouterParams.AuthenticationRouting.ForgotPassword)]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordCommand command)
+        {
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
+        [HttpPost(RouterParams.AuthenticationRouting.ConfirmResetPassword)]
+        public async Task<IActionResult> ConfirmResetPassword([FromBody] ResetPasswordCommand command)
+        {
+            var response = await Mediator.Send(command);
+            if (response.Succeeded)
+            {
+                return Ok(new { statuscode = response.statusCode, message = response.Message });
+            }
+            else
+            {
+                return CustomResult(response);
+            }
+        }
     }
 }

@@ -201,4 +201,10 @@
   <data name="EmailConfirmationSuccess" xml:space="preserve">
     <value>تم تأكيد الايميل بنجاح</value>
   </data>
+  <data name="ForgotPasswordFailed" xml:space="preserve">
+    <value>فشل في اعادة تعيين كلمة السر</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>يجب الا تقل كلمة السر عن 8 خانات</value>
+  </data>
 </root>

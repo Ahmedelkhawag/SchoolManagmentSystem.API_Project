@@ -29,6 +29,7 @@ namespace SchoolManagmentSystem.API
             #region Controller Services
 
             builder.Services.AddControllers();
+            builder.Services.AddLogging();
 
             #endregion
             #region DbContext Services

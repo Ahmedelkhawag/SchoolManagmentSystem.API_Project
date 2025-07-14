@@ -12,6 +12,7 @@ namespace SchoolManagmentSystem.Service.Dependacies
         {
 
             services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
+            services.Configure<resetPasswordSettings>(configuration.GetSection("resetPasswordSettings"));
 
             services.AddTransient<IStudentService, StudentService>();
             services.AddTransient<IDepartmentService, DepartmentService>();

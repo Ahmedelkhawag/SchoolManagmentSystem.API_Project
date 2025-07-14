@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using SchoolManagmentSystem.Data.Entities.Identity;
@@ -22,17 +23,27 @@ namespace SchoolManagmentSystem.Service.Implmentations
         // private readonly ConcurrentDictionary<string, RefreshToken> _UserRefreshToken;
         private readonly IRefreshTokenRepository _refreshTokenRepository;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly resetPasswordSettings _resetPasswordSettings;
+        private readonly IEmailService _emailService;
+        private readonly ILogger<AuthenticationService> _logger;
 
 
         #endregion  
 
         #region ctor
-        public AuthenticationService(IOptions<JWT> jwtOptions, IRefreshTokenRepository refreshTokenRepository, UserManager<ApplicationUser> userManager)
+        public AuthenticationService(IOptions<JWT> jwtOptions,
+            IRefreshTokenRepository refreshTokenRepository,
+            UserManager<ApplicationUser> userManager, IOptions<resetPasswordSettings> resetPasswordOptions,
+            IEmailService emailService,
+            ILogger<AuthenticationService> logger)
         {
             _jwtSettings = jwtOptions.Value;
             // _UserRefreshToken = new ConcurrentDictionary<string, RefreshToken>();
             _refreshTokenRepository = refreshTokenRepository;
             _userManager = userManager;
+            _resetPasswordSettings = resetPasswordOptions.Value;
+            _emailService = emailService;
+            _logger = logger;
         }
         #endregion
 
@@ -278,6 +289,51 @@ namespace SchoolManagmentSystem.Service.Implmentations
             }
             var result = await _userManager.ConfirmEmailAsync(user, code);
             return result.Succeeded ? "Email confirmed successfully." : "Email confirmation failed.";
+        }
+
+        public async Task<string> ForgotPasswordAsync(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user is not null)
+            {
+
+                try
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    var resetLink = $"{_resetPasswordSettings.ResetPasswordUrl}?userId={user.Id}&code={Uri.EscapeDataString(token)}";
+                    await _emailService.SendEmailAsync(user.Email, user.UserName, $"Please reset your password by clicking here: <a href='{resetLink}'>Reset Password</a>", "Reset Your Password");
+
+                }
+                catch (Exception ex)
+                {
+                    // Log the exception (ex) as needed
+                    _logger.LogError(ex, "Failed to send password reset email for user {Email}", email);
+                }
+            }
+            return "If an account with this email exists, we have sent a link to reset your password.";
+        }
+
+        public async Task<string> ResetPasswordAsync(ResetPasswordParams passwordParams)
+        {
+            var user = await _userManager.FindByEmailAsync(passwordParams.Email);
+            if (user == null)
+            {
+                throw new ArgumentException("User not found.", nameof(passwordParams.Email));
+            }
+
+            var resetResult = await _userManager.ResetPasswordAsync(user, passwordParams.Token, passwordParams.NewPassword);
+            if (resetResult.Succeeded)
+            {
+                return "Password reset successfully.";
+            }
+            else
+            {
+                var errors = string.Join(", ", resetResult.Errors.Select(e => e.Description));
+                throw new InvalidOperationException($"Password reset failed: {errors}");
+            }
+
+
+
         }
         #endregion
     }

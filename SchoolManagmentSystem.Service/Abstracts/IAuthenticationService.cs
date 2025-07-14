@@ -1,4 +1,5 @@
 ﻿using SchoolManagmentSystem.Data.Entities.Identity;
+using SchoolManagmentSystem.Data.Helpers;
 using SchoolManagmentSystem.Data.Results;
 using System.Security.Claims;
 
@@ -13,6 +14,8 @@ namespace SchoolManagmentSystem.Service.Abstracts
         Task<JWTAuthResponse> CreateRefreshToken(string accessToken, string refreshToken);
         Task<string> ValidateToken(string accessToken);
         Task<string> ConfirmEmailAsync(int userId, string code);
+        Task<string> ForgotPasswordAsync(string email);
+        Task<string> ResetPasswordAsync(ResetPasswordParams passwordParams);
 
     }
 }

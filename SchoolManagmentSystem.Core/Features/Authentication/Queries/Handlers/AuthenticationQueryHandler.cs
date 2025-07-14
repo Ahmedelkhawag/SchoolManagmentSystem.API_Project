@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using SchoolManagmentSystem.Core.Bases;
+using SchoolManagmentSystem.Core.Features.Authentication.Commands.Models;
 using SchoolManagmentSystem.Core.Features.Authentication.Queries.Models;
 using SchoolManagmentSystem.Core.SharedResourses;
 using SchoolManagmentSystem.Data.Entities.Identity;
@@ -10,7 +11,8 @@ using SchoolManagmentSystem.Service.Abstracts;
 namespace SchoolManagmentSystem.Core.Features.Authentication.Queries.Handlers
 {
     public class AuthenticationQueryHandler : ResponseHandler, IRequestHandler<AuthorizeUserQuery, GeneralResponse<string>>,
-        IRequestHandler<ConfirmEmailQuery, GeneralResponse<string>>
+        IRequestHandler<ConfirmEmailQuery, GeneralResponse<string>>,
+        IRequestHandler<ForgotPasswordCommand, GeneralResponse<string>>
     {
 
 
@@ -63,6 +65,16 @@ namespace SchoolManagmentSystem.Core.Features.Authentication.Queries.Handlers
             }
             return Success<string>(result);
 
+        }
+
+        public async Task<GeneralResponse<string>> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
+        {
+            var result = await _authenticationService.ForgotPasswordAsync(request.Email);
+            if (string.IsNullOrEmpty(result))
+            {
+                return BadRequest<string>(_Localizer[SharedResourseKeys.ForgotPasswordFailed]);
+            }
+            return Success<string>(result);
         }
         #endregion
 

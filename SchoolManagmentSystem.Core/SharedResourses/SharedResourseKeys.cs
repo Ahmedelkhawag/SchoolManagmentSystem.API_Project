@@ -30,6 +30,11 @@
         public const string EmailIsAlreadyExists = "EmailIsAlreadyExists";
         public const string EmailConfirmationFailed = "EmailConfirmationFailed";
         public const string EmailConfirmationSuccess = "EmailConfirmationSuccess";
+        public const string ForgotPasswordFailed = "ForgotPasswordFailed";
+        public const string PasswordLength = "PasswordLength";
+
+
+
 
     }
 }

@@ -201,4 +201,10 @@
   <data name="EmailConfirmationSuccess" xml:space="preserve">
     <value>Email Confirmation Success</value>
   </data>
+  <data name="ForgotPasswordFailed" xml:space="preserve">
+    <value>Forgot Password Failed</value>
+  </data>
+  <data name="PasswordLength" xml:space="preserve">
+    <value>New password must be at least 8 characters long</value>
+  </data>
 </root>
